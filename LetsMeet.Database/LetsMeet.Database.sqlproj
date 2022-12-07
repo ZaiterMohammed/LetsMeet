@@ -64,5 +64,6 @@
     <Build Include="Tables\Person.sql" />
     <Build Include="Tables\Student.sql" />
     <Build Include="Tables\Teacher.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllTeachers.sql" />
   </ItemGroup>
 </Project>
