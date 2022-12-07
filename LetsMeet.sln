@@ -9,6 +9,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LetsMeet.Database", "LetsMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhadiTry", "GhadiTry\GhadiTry.csproj", "{6F325947-BFD8-4D03-8B66-C5C9648D4B19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{BC480ECD-159A-483A-9489-E0681CA45FC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{6F325947-BFD8-4D03-8B66-C5C9648D4B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F325947-BFD8-4D03-8B66-C5C9648D4B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F325947-BFD8-4D03-8B66-C5C9648D4B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC480ECD-159A-483A-9489-E0681CA45FC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC480ECD-159A-483A-9489-E0681CA45FC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC480ECD-159A-483A-9489-E0681CA45FC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC480ECD-159A-483A-9489-E0681CA45FC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
