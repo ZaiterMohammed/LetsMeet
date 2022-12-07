@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.WebApi", "LetsMeet
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LetsMeet.Database", "LetsMeet.Database\LetsMeet.Database.sqlproj", "{FDE9BB66-475F-4BB7-A087-E1698F144C9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Abstractions", "LetsMeet.Abstractions\LetsMeet.Abstractions.csproj", "{013300B3-BF1C-4572-B95E-33682823FA9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Abstractions", "LetsMeet.Abstractions\LetsMeet.Abstractions.csproj", "{013300B3-BF1C-4572-B95E-33682823FA9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Store", "LetsMeet.Store\LetsMeet.Store.csproj", "{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Store", "LetsMeet.Store\LetsMeet.Store.csproj", "{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Business", "LetsMeet.Business\LetsMeet.Business.csproj", "{BE5E7A06-B7AA-4537-8051-715956AE2B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LetsMeet.Store
 {
-    public class UserStore
+    public class CompanyStore
     {
     }
 }

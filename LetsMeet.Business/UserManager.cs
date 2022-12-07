@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LetsMeet.Store
+namespace LetsMeet.Business
 {
-    public class UserStore
+    internal class UserManager
     {
     }
 }
