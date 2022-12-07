@@ -7,7 +7,6 @@ namespace LetsMeet.WebApi.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyManager companyManager;
-
         public CompanyController(ICompanyManager companyManager)
         {
             this.companyManager = companyManager;
@@ -56,7 +55,5 @@ namespace LetsMeet.WebApi.Controllers
         {
             return Ok(companyManager.DeleteRole(roleId));
         }
-
-
     }
 }
