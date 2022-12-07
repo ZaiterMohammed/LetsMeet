@@ -28,6 +28,18 @@
         }
         public string CreateRole(Role role)
         {
+            if (role == null)
+            {
+                throw new ArgumentNullException("role Cannot be bull");
+            }
+
+            var RoleByUserId = GetRoleByUserId(role.UserId);
+
+            if (RoleByUserId == null)
+            {
+                throw new ArgumentNullException("role Cannot be bull");
+            }
+
             return organisationStore.CreateRole(role);
         }
         public string AcceptRole(Role role)
@@ -37,6 +49,10 @@
         public string DeleteRole(Guid roleId)
         {
             return organisationStore.DeleteRole(roleId);
+        }
+        public Role GetRoleByUserId(Guid userId)
+        {
+            return organisationStore.GetRoleByUserId(userId);
         }
     }
 }

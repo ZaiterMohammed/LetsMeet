@@ -166,5 +166,52 @@
                 return (ex.Message.ToString());
             }
         }
+        public Role GetRoleByUserId(Guid userId)
+        {
+            string sql = "GetRoleByUserId";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            con.Open();
+            var role = new Role();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                role = new Role()
+                {
+                    RoleId = reader.GetGuid("RoleId"),
+                    RoleName = reader.GetString("RoleName"),
+                    IsVerified = reader.GetInt32("IsVerified"),
+                    UserId = reader.GetGuid("UserId"),
+                    CompanyId = reader.GetGuid("CompanyId"),
+                    OrganisationId = reader.GetGuid("OrganisationId"),
+
+                };
+            }
+            return role;
+        }
+
+        public Post GetPostById(Guid postId)
+        {
+            string sql = "GetPostById";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostId", postId);
+            con.Open();
+            var post = new Post();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                post = new Post()
+                {
+                    PostId = reader.GetGuid("PostId"),
+                    PostTitle = reader.GetString("PostTitle"),
+                    PostDescription = reader.GetString("PostDescription"),
+                    CreatedDate = reader.GetDateTime("CreatedDate"),
+                    ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                    CompanyId = reader.GetGuid("CompanyId"),
+                    OrganisationId = reader.GetGuid("OrganisationId"),
+                };
+            }
+            return post;
+        }
     }
 }

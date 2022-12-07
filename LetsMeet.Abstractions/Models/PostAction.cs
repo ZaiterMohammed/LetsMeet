@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LetsMeet.Abstractions.Models
+﻿namespace LetsMeet.Abstractions.Models
 {
-    public class Role
-    {
-        public Guid RoleId
-        {
-            get;
-            set;
-        }
-        public string RoleName
-        {
-            get;
-            set;
-        }
+    using System;
 
-        public int IsVerified
+    public class PostAction
+    {
+        public Guid PostActionId
+        {
+            get;
+            set;
+        }
+        public Guid PostId
         {
             get;
             set;
@@ -28,17 +20,22 @@ namespace LetsMeet.Abstractions.Models
             get;
             set;
         }
-
         public Guid CompanyId
         {
             get;
             set;
         }
-
         public Guid OrganisationId
         {
             get;
             set;
         }
+
+        public int Like
+        {
+            get;
+            set;
+        }
+
     }
 }

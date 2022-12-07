@@ -24,9 +24,27 @@ namespace LetsMeet.Business
         {
             return postStore.UpdatePost(post);
         }
-        public string DeletePost(Guid postId)
+        public string DeletePost(Guid postId ,Guid companyId)
         {
-            return postStore.DeletePost(postId);
+            if(companyId != GetPostById(postId).CompanyId)
+            {
+                return "cannet delete this post";
+            }
+            return postStore.DeletePost(postId, companyId);
+        }
+
+        public Post GetPostById(Guid postId)
+        {
+            return postStore.GetPostById(postId);
+        }
+
+        public string AddLike(PostAction postAction)
+        {
+            return postStore.AddLike(postAction);
+        }
+        public string DeleteLike(Guid postActionId)
+        {
+            return postStore.DeleteLike(postActionId);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using LetsMeet.Abstractions.Managers;
 using LetsMeet.Abstractions.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 
 namespace LetsMeet.WebApi.Controllers
 {
@@ -28,11 +29,25 @@ namespace LetsMeet.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("api/post/{postId}")]
-        public IActionResult DeletePost([FromRoute] Guid postId)
+        [Route("api/post/{postId}/{companyId}")]
+        public IActionResult DeletePost([FromRoute] Guid postId, Guid companyId)
         {
-            return Ok(postManager.DeletePost(postId));
+            return Ok(postManager.DeletePost(postId, companyId));
         }
 
+
+        [HttpPost]
+        [Route("api/post")]
+        public IActionResult AddLike([FromBody] PostAction postAction)
+        {
+            return Ok(postManager.AddLike(postAction));
+        }
+
+        [HttpDelete]
+        [Route("api/post/{postActionId}")]
+        public IActionResult DeleteLike([FromRoute] Guid postActionId)
+        {
+            return Ok(postManager.DeleteLike(postActionId));
+        }
     }
 }
