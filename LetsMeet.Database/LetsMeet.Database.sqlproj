@@ -62,5 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Person.sql" />
+    <Build Include="Tables\Student.sql" />
   </ItemGroup>
 </Project>
