@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LetsMeet.Abstractions
+﻿namespace LetsMeet.Abstractions
 {
-    internal class IUserStore
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using LetsMeet.Abstractions.Models;
+
+    public interface IUserStore
     {
     }
 }
