@@ -2,14 +2,8 @@
 {
 	using System;
 
-	public class Company
-	{
-		public Guid CompanyId
-		{
-			get;
-			set;
-		}
-
+	public class CreateCompanyRequest
+    {
 		public string CompanyName
 		{
 			get;
@@ -32,17 +26,5 @@
             get;
             set;
         }
-
-        public DateTime CreatedDate
-		{
-			get;
-			set;
-		}
-
-		public DateTime ModifiedDate
-		{
-			get;
-			set;
-		}
 	}
 }

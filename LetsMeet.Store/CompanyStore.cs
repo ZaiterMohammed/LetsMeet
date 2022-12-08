@@ -8,8 +8,8 @@
 
     public class CompanyStore : ICompanyStore
     {
-        private string ConnectionName = "Data Source=DESKTOP-EMBAHHT\\AHMAD;Initial Catalog=LetsMeet;Integrated Security=True";
-        public string AddCompany(Company company)
+        private string ConnectionName = "Data Source=DESKTOP-EMBAHHT\\AHMAD;Initial Catalog=LetsMeetdb;Integrated Security=True";
+        public string AddCompany(CreateCompanyRequest company)
         {
             using SqlConnection con = new SqlConnection(ConnectionName);
             try
@@ -19,8 +19,8 @@
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompanyName", company.CompanyName);
                 cmd.Parameters.AddWithValue("@CompanyTypes", company.CompanyTypes);
-                cmd.Parameters.AddWithValue("@CountryName", company.Country.CountryName);
-                cmd.Parameters.AddWithValue("@CityName", company.City.CityName);
+                cmd.Parameters.AddWithValue("@CountryName", company.CountryId);
+                cmd.Parameters.AddWithValue("@CityName", company.CityId);
                 cmd.Parameters.AddWithValue("@CreatedDate", company.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", company.ModifiedDate);
                 con.Open();
@@ -48,10 +48,10 @@
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompanyName", company.CompanyName);
                 cmd.Parameters.AddWithValue("@CompanyTypes", company.CompanyTypes);
-                cmd.Parameters.AddWithValue("@CountryName", company.Country.CountryName);
-                cmd.Parameters.AddWithValue("@CityName", company.City.CityName);
-                cmd.Parameters.AddWithValue("@CreatedDate", company.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", company.ModifiedDate);
+                cmd.Parameters.AddWithValue("@CountryName", company.CountryId);
+                cmd.Parameters.AddWithValue("@CityName", company.CityId);
+                cmd.Parameters.AddWithValue("@CreatedDate",DateTime.Now);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();

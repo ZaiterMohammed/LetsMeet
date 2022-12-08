@@ -5,8 +5,8 @@
 
     public interface ICompanyStore
     {
-        public string AddCompany(Company company);
-        public string UpdateCompany(Company company);
+        public string AddCompany(CreateCompanyRequest company);
+        public string UpdateCompany(CreateCompanyRequest company);
         public string DeleteCompany(Guid companyId);
         public string CreateRole(Guid id, Guid userId, string roleName);
         public string AcceptRole(Guid id, Guid userId, string roleName);

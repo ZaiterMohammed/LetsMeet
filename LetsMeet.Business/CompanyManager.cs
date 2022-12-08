@@ -15,12 +15,12 @@
         }
 
 
-        public string AddCompany(Company company)
+        public string AddCompany(CreateCompanyRequest company)
         {
             return companyStore.AddCompany(company);
         }
 
-        public string UpdateCompany(Company company)
+        public string UpdateCompany(CreateCompanyRequest company)
         {
             return companyStore.UpdateCompany(company);
         }
