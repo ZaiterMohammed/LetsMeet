@@ -2,52 +2,45 @@
 {
 	using System;
 
-	public class Class1
+	public class Post
 	{
 		public Guid PostId
-
 		{
 			get;
 			set;
 		}
 
-		public string Title
-
+		public string PostTitle
 		{
 			get;
 			set;
 		}
 
-		public string Description
-
+		public string PostDescription
 		{
 			get;
 			set;
 		}
 
 		public DateTime CreatedDate
-
 		{
 			get;
 			set;
 		}
 
 		public DateTime ModifiedDate
-
 		{
 			get;
 			set;
 		}
 
-		public string CreatedBy
-
+		public Guid CompanyId
 		{
 			get;
 			set;
 		}
 
-		public string ModifiedBy
-
+		public Guid OrganisationId
 		{
 			get;
 			set;

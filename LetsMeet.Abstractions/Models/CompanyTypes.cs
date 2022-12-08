@@ -3,7 +3,7 @@
     using System;
     using LetsMeet.Abstractions.Models;
 
-    public enum ParkingTypes
+    public enum CompanyTypes
     {
         Business,
         Enterprise

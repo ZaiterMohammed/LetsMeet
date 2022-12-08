@@ -6,59 +6,69 @@
 	public class User
 	{
 		public Guid UserId
-
 		{
 			get;
 			set;
 		}
 
 		public string FirstName
-
 		{
 			get;
 			set;
 		}
 
 		public string LastName
-
 		{
 			get;
 			set;
 		}
 
 		public int Age
-
 		{
 			get;
 			set;
 		}
 
-		public bool IsFeatured
-
+		public int IsFeatured
 		{
 			get;
 			set;
 		}
 
-		public string Location
-
+		public Country Country
 		{
 			get;
 			set;
 		}
 
-		public DateTime CreatedDate
+        public City City
+        {
+            get;
+            set;
+        }
 
+        public DateTime CreatedDate
 		{
 			get;
 			set;
 		}
 
 		public DateTime ModifiedDate
-
 		{
 			get;
 			set;
 		}
-	}
+
+        public Guid CompanyId
+        {
+            get;
+            set;
+        }
+
+        public Guid OrganisationId
+        {
+            get;
+            set;
+        }
+    }
 }
