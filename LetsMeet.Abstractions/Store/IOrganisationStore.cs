@@ -11,5 +11,6 @@
         public string CreateRole(Role role);
         public string AcceptRole(Role role);
         public string DeleteRole(Guid roleId);
+        public Role GetRoleByUserId(Guid userId);
     }
 }

@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LetsMeet.Abstractions\LetsMeet.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
