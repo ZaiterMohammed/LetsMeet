@@ -90,7 +90,7 @@
             }
         }
 
-        public string CreateRole(Role role)
+        public string CreateRole(Guid id, Guid userId, string roleName)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -98,11 +98,9 @@
                 string sql = "usp_CreateRole";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@RoleName", role.RoleName);
-                cmd.Parameters.AddWithValue("@IsVerified", role.IsVerified);
-                cmd.Parameters.AddWithValue("@UserId", role.UserId);
-                cmd.Parameters.AddWithValue("@CompanyId", role.CompanyId);
-                cmd.Parameters.AddWithValue("@OrganisationId", role.OrganisationId);
+                cmd.Parameters.AddWithValue("@RoleName", roleName);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@OwnerId", id);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -119,7 +117,7 @@
         }
 
 
-        public string AcceptRole(Role role)
+        public string AcceptRole(Guid id, Guid userId, string roleName)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -127,11 +125,10 @@
                 string sql = "usp_UpdateRole";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@RoleName", role.RoleName);
-                cmd.Parameters.AddWithValue("@IsVerified", role.IsVerified);
-                cmd.Parameters.AddWithValue("@UserId", role.UserId);
-                cmd.Parameters.AddWithValue("@CompanyId", role.CompanyId);
-                cmd.Parameters.AddWithValue("@OrganisationId", role.OrganisationId);
+                cmd.Parameters.AddWithValue("@IsVerified", 1);
+                cmd.Parameters.AddWithValue("@RoleName", roleName);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@OwnerId", id);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -188,10 +185,6 @@
                     RoleId = reader.GetGuid("RoleId"),
                     RoleName = reader.GetString("RoleName"),
                     IsVerified = reader.GetInt32("IsVerified"),
-                    UserId = reader.GetGuid("UserId"),
-                    CompanyId = reader.GetGuid("CompanyId"),
-                    OrganisationId = reader.GetGuid("OrganisationId"),
-
                 };
             }
             return role;
@@ -209,8 +202,9 @@
                 cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
                 cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
-                cmd.Parameters.AddWithValue("@CompanyId", post.CompanyId);
-                cmd.Parameters.AddWithValue("@OrganisationId", post.OrganisationId);
+                cmd.Parameters.AddWithValue("@CreatedBy", post.CreatedBy);
+                cmd.Parameters.AddWithValue("@UpdatedBy", post.UpdatedBy);
+                cmd.Parameters.AddWithValue("@OwnerTypes", post.OwnerTypes);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -237,8 +231,9 @@
                 cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
                 cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
-                cmd.Parameters.AddWithValue("@CompanyId", post.CompanyId);
-                cmd.Parameters.AddWithValue("@OrganisationId", post.OrganisationId);
+                cmd.Parameters.AddWithValue("@CreatedBy", post.CreatedBy);
+                cmd.Parameters.AddWithValue("@UpdatedBy", post.UpdatedBy);
+                cmd.Parameters.AddWithValue("@OwnerTypes", post.OwnerTypes);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -297,8 +292,9 @@
                     PostDescription = reader.GetString("PostDescription"),
                     CreatedDate = reader.GetDateTime("CreatedDate"),
                     ModifiedDate = reader.GetDateTime("ModifiedDate"),
-                    CompanyId = reader.GetGuid("CompanyId"),
-                    OrganisationId = reader.GetGuid("OrganisationId"),
+                    CreatedBy = reader.GetGuid("CreatedBy"),
+                    UpdatedBy = reader.GetGuid("UpdatedBy"),
+                    OwnerTypes = Enum.Parse<OwnerTypes>(reader.GetString("OwnerTypes"))
                 };
             }
             return post;

@@ -8,8 +8,8 @@
         public string AddCompany(Company company);
         public string UpdateCompany(Company company);
         public string DeleteCompany(Guid companyId);
-        public string CreateRole(Role role);
-        public string AcceptRole(Role role);
+        public string CreateRole(Guid id, Guid userId, string roleName);
+        public string AcceptRole(Guid id, Guid userId, string roleName);
         public string DeleteRole(Guid roleId);
         public Role GetRoleByUserId(Guid userId);
         public string AddPost(Post post);

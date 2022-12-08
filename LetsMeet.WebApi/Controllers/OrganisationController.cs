@@ -1,9 +1,9 @@
-﻿using LetsMeet.Abstractions.Managers;
-using LetsMeet.Abstractions.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace LetsMeet.WebApi.Controllers
+﻿namespace LetsMeet.WebApi.Controllers
 {
+    using LetsMeet.Abstractions.Managers;
+    using LetsMeet.Abstractions.Models;
+    using Microsoft.AspNetCore.Mvc;
+
     public class OrganisationController : Controller
     {
         private readonly IOrganisationManager organisationManager;
@@ -34,20 +34,20 @@ namespace LetsMeet.WebApi.Controllers
             return Ok(organisationManager.DeleteOrganisation(organizationId));
         }
 
-
         [HttpPost]
-        [Route("api/organization")]
-        public IActionResult CreateRole([FromBody] Role role)
+        [Route("api/organization/{id}/users/{userId}")]
+        public IActionResult CreateRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
-            return Ok(organisationManager.CreateRole(role));
+            return Ok(organisationManager.CreateRole(id, userId, roleName));
         }
 
         [HttpPut]
-        [Route("api/organization")]
-        public IActionResult AcceptRole([FromBody] Role role)
+        [Route("api/organization/{id}/users/{userId}")]
+        public IActionResult AcceptRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
-            return Ok(organisationManager.AcceptRole(role));
+            return Ok(organisationManager.AcceptRole(id, userId, roleName));
         }
+
 
         [HttpDelete]
         [Route("api/organization/{roleId}")]
@@ -55,7 +55,6 @@ namespace LetsMeet.WebApi.Controllers
         {
             return Ok(organisationManager.DeleteRole(roleId));
         }
-
 
         [HttpPost]
         [Route("api/post")]

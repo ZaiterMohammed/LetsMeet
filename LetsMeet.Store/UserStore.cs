@@ -76,7 +76,7 @@
             try
             {
                 string sql = "usp_DeleteUser";
-                using SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 con.Open();
