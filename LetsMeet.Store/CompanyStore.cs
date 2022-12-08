@@ -8,9 +8,10 @@
 
     public class CompanyStore : ICompanyStore
     {
+        private string ConnectionName = "Data Source=DESKTOP-EMBAHHT\\AHMAD;Initial Catalog=LetsMeet;Integrated Security=True";
         public string AddCompany(Company company)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(ConnectionName);
             try
             {
                 string sql = "usp_CreateCompany";
