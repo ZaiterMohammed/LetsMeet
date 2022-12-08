@@ -4,6 +4,7 @@
     using LetsMeet.Abstractions.Models;
     using Microsoft.AspNetCore.Mvc;
 
+    [ApiController]
     public class PostController : Controller
     {
         private readonly IPostManager postManager;
@@ -13,14 +14,14 @@
         }
 
         [HttpPost]
-        [Route("api/post")]
+        [Route("api/post/like")]
         public IActionResult AddLike([FromBody] PostAction postAction)
         {
             return Ok(postManager.AddLike(postAction));
         }
 
         [HttpDelete]
-        [Route("api/post/{postId}/{userId}")]
+        [Route("api/post/like/{postId}/{userId}")]
         public IActionResult DeleteLike([FromRoute] Guid postId, [FromRoute] Guid userId)
         {
             return Ok(postManager.DeleteLike(postId, userId));

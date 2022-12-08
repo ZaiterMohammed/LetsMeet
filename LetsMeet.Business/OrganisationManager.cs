@@ -5,7 +5,7 @@
     using LetsMeet.Abstractions.Store;
     using System;
 
-    internal class OrganisationManager : IOrganisationManager
+    public class OrganisationManager : IOrganisationManager
     {
         private readonly IOrganisationStore organisationStore;
 

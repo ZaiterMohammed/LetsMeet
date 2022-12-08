@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LetsMeet.Abstractions\LetsMeet.Abstractions.csproj" />
+    <ProjectReference Include="..\LetsMeet.Business\LetsMeet.Business.csproj" />
+    <ProjectReference Include="..\LetsMeet.Store\LetsMeet.Store.csproj" />
   </ItemGroup>
 
 </Project>
