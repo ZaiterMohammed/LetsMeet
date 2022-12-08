@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[AddCompany]
+﻿CREATE PROCEDURE [dbo].[CreateCompany]
  @CompanyId  uniqueidentifier, 
  @CompanyName nvarchar(50),  
  @CompanyTypes nvarchar(50),  

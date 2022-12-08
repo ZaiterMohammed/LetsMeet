@@ -5,7 +5,7 @@
  @CreatedDate date,
  @ModifiedDate date,
  @UserId uniqueidentifier,
- @OrganisationId uniqueidentifier,
+ @OwnerId uniqueidentifier,
  @PostDescription nvarchar(50)
 
 AS

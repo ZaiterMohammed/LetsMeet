@@ -168,4 +168,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="LikeId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="25d4e502-d901-4b6a-a0c1-ed19b78b32f2" ChangeDateTime="12/08/2022 09:25:31">
+    <Property Name="ElementName" Value="[dbo].[Owner].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Owner]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OwnerId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8613d3a4-c9c0-49e2-a44f-587c051749a4" ChangeDateTime="12/08/2022 09:25:46">
+    <Property Name="ElementName" Value="[dbo].[Post].[OrganisationId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OwnerId" />
+  </Operation>
 </Operations>

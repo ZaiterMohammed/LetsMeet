@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[AddUser]
+﻿CREATE PROCEDURE [dbo].[CreateUser]
  @UserId  uniqueidentifier,
  @FirstName   nvarchar(50),  
  @LastName nvarchar(50),  

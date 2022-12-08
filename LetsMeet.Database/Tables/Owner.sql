@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Owner]
+(
+	[OwnerId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [OwnerName] NCHAR(10) NULL
+)

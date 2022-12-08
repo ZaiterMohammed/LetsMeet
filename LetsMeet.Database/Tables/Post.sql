@@ -5,11 +5,11 @@
     [CreatedDate] DATE NULL, 
     [ModifiedDate] DATE NULL, 
     [UserId] UNIQUEIDENTIFIER NULL, 
-    [OrganisationId] UNIQUEIDENTIFIER NULL, 
+    [OwnerId] UNIQUEIDENTIFIER NULL, 
     [PostDescription] NVARCHAR(50) NULL,
 
     --missing createdBy and modifiedBy
 
 CONSTRAINT [FK_Post_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId]),
-CONSTRAINT [FK_Post_ToOrganisation] FOREIGN KEY ([OrganisationId]) REFERENCES [Organisation]([OrganisationId])
+CONSTRAINT [FK_Post_ToOwner] FOREIGN KEY ([OwnerId]) REFERENCES [Owner]([OwnerId])
 )
