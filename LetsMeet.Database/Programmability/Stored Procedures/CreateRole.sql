@@ -7,5 +7,5 @@
 AS
 BEGIN
 	insert into Role (RoleId,RoleName,IsVerified,UserId,OwnerId)
-	values(@RoleId,@Name,@IsVerified,@UserId,@OwnerId)
+	values(newId(),@Name,@IsVerified,@UserId,@OwnerId)
 END

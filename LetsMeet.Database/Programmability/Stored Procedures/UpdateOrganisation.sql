@@ -8,7 +8,6 @@
 AS
 BEGIN
 update Organisation
- set OrganisationId = @OrganisationId,OrganisationName = @OrganisationName , OrganisationType = @OrganisationType
+ set OrganisationName = @OrganisationName , OrganisationType = @OrganisationType ,@OrganisationCategory = OrganisationCategory ,@CreatedDate = CreatedDate , @ModifiedDate = ModifiedDate
  where OrganisationId = @OrganisationId
-
 End

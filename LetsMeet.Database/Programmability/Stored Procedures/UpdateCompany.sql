@@ -9,10 +9,9 @@
  
 AS
  BEGIN 
- 
 
  update Company
- set CompanyId = @CompanyId,CompanyName = @CompanyName , CompanyTypes = @CompanyTypes
- where COmpanyId = @CompanyId
+ set CompanyName = @CompanyName , CompanyTypes = @CompanyTypes, CreatedDate = @CreatedDate, ModifiedDate = @ModifiedDate
+ where CompanyId = @CompanyId
 
  END

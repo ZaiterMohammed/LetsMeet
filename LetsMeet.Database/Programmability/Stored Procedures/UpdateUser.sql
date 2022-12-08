@@ -14,7 +14,7 @@ AS
  
 
  update Users
- set UserId = @UserId,FirstName = @FirstName , IsFeatured = @IsFeatured -- you should not update userid
+ set FirstName = @FirstName, LastName = @LastName , Age = @Age  , IsFeatured = @IsFeatured  , CreatedDate = @CreatedDate , ModifiedDate = @ModifiedDate
  where UserId = @UserId
 
  END

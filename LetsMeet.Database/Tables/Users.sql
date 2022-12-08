@@ -8,5 +8,7 @@
     [CityId] UNIQUEIDENTIFIER NULL, 
     [CountryId] UNIQUEIDENTIFIER NULL, 
     [CreatedDate] DATE NULL, 
-    [ModifiedDate] DATE NULL
+    [ModifiedDate] DATE NULL, 
+    CONSTRAINT [FK_Users_ToCountry] FOREIGN KEY ([CountryId]) REFERENCES [Country]([CountryId]), 
+    CONSTRAINT [FK_Users_ToCity] FOREIGN KEY ([CityId]) REFERENCES [City]([CityId]), 
 )
