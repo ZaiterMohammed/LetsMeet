@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteCompany]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteCompany]
  @CompanyId uniqueidentifier 
 
 AS

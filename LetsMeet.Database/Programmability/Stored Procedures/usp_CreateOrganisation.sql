@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreateOrganisation]
+﻿CREATE PROCEDURE [dbo].[usp_CreateOrganisation]
  @OrganisationName nvarchar(50),  
  @OrganisationType nvarchar(50),  
  @OrganisationCategory uniqueidentifier,

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[GetPostById]
+﻿CREATE PROCEDURE [dbo].[usp_GetPostById]
 @PostId uniqueidentifier
 
 

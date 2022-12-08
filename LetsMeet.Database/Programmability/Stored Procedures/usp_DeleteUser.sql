@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteUser]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteUser]
  @UserId uniqueidentifier 
 
 AS

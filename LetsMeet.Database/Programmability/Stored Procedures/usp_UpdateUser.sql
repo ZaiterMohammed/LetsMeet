@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UpdateUser]
+﻿CREATE PROCEDURE [dbo].[usp_UpdateUser]
  @UserId  uniqueidentifier,
  @FirstName   nvarchar(50),  
  @LastName nvarchar(50),  
