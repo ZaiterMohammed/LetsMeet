@@ -21,7 +21,7 @@
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Age", user.Age);
                 cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                cmd.Parameters.AddWithValue("@Location", user.Location);
+                // cmd.Parameters.AddWithValue("@Location", user.Location);
                 cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
                 con.Open();
@@ -50,7 +50,7 @@
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Age", user.Age);
                 cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                cmd.Parameters.AddWithValue("@Location", user.Location);
+                // cmd.Parameters.AddWithValue("@Location", user.Location);
                 cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
                 con.Open();
@@ -91,3 +91,4 @@
             }
         }
     }
+}

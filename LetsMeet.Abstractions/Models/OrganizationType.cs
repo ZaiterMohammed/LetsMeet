@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public class OrganizationType
+	public enum OrganizationType
 	{
 		Academy,
 		Government

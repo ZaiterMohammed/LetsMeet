@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public class OrganizationCategory
+	public enum OrganizationCategory
 	{
 		Private,
 		Public

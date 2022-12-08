@@ -1,9 +1,8 @@
 ﻿namespace LetsMeet.WebApi.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using LetsMeet.Abstractions;
+    using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
-    using LetsMeet.Business
+    using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     public class UsersController : ControllerBase
