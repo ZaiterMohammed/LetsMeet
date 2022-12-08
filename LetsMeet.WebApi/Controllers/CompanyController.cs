@@ -15,17 +15,17 @@
 
         [HttpPost]
         [Route("api/company")]
-        public IActionResult AddCompany([FromBody] Company company)
+        public IActionResult AddCompany([FromBody] CreateCompanyRequest createCompanyRequest)
         {
-            return Ok(companyManager.AddCompany(company));
+            return Ok(companyManager.AddCompany(createCompanyRequest));
         }
 
        
        [HttpPut]
        [Route("api/company")]
-       public IActionResult UpdateCompany([FromBody] Company company)
+       public IActionResult UpdateCompany([FromBody] CreateCompanyRequest createCompanyRequest)
        {
-           return Ok(companyManager.UpdateCompany(company));
+           return Ok(companyManager.UpdateCompany(createCompanyRequest));
        }
         
         [HttpDelete]
@@ -61,16 +61,16 @@
 
         [HttpPost]
         [Route("api/company/post")]
-        public IActionResult AddPost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        public IActionResult AddPost([FromBody] CreatePostRequest createPostRequest) //post should be in CompanyController and OrganizationController
         {
-            return Ok(companyManager.AddPost(post));
+            return Ok(companyManager.AddPost(createPostRequest));
         }
 
         [HttpPut]
         [Route("api/company/post")]
-        public IActionResult UpdatePost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        public IActionResult UpdatePost([FromBody] CreatePostRequest createPostRequest) //post should be in CompanyController and OrganizationController
         {
-            return Ok(companyManager.UpdatePost(post));
+            return Ok(companyManager.UpdatePost(createPostRequest));
         }
 
         [HttpDelete]

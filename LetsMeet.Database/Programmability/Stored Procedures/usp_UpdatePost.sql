@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[usp_UpdatePost]
  @PostId  uniqueidentifier, 
  @PostTitle nvarchar(50),  
- @CreatedDate date,
  @ModifiedDate date,
  @UserId uniqueidentifier,
  @OwnerId uniqueidentifier,
@@ -10,6 +9,6 @@
 AS
 BEGIN
 update Post
- set PostTitle = @PostTitle , PostDescription = @PostDescription 
+ set PostTitle = @PostTitle , PostDescription = @PostDescription , ModifiedDate = @ModifiedDate
  where PostId = @PostId
  END

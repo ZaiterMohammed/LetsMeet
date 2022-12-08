@@ -5,8 +5,8 @@
 
     public interface IUserManager
     {
-        public string AddUser(User user);
-        public string UpdateUser(User user);
+        public string AddUser(CreateRequestUser createRequestUser);
+        public string UpdateUser(CreateRequestUser createRequestUser);
         public string DeleteUser(Guid userId);
     }
 }

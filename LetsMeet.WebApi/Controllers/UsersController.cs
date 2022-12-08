@@ -16,16 +16,16 @@
 
         [HttpPost]
         [Route("api/users")]
-        public IActionResult AddUser([FromBody] User user)
+        public IActionResult AddUser([FromBody] CreateRequestUser createRequestUser)
         {
-            return Ok(userManager.AddUser(user));
+            return Ok(userManager.AddUser(createRequestUser));
         }
 
         [HttpPut]
         [Route("api/users")]
-        public IActionResult UpdateUser([FromBody] User user)
+        public IActionResult UpdateUser([FromBody] CreateRequestUser createRequestUser)
         {
-            return Ok(userManager.UpdateUser(user));
+            return Ok(userManager.UpdateUser(createRequestUser));
         }
 
         [HttpDelete]

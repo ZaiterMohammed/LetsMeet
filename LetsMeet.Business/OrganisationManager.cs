@@ -14,13 +14,13 @@
             this.organisationStore = organisationStore;
         }
 
-        public string AddOrganisation(Organisation organisation)
+        public string AddOrganisation(CreateOrganisationRequest organisationRequest)
         {
-            return organisationStore.AddOrganisation(organisation);
+            return organisationStore.AddOrganisation(organisationRequest);
         }
-        public string UpdateOrganisation(Organisation organisation)
+        public string UpdateOrganisation(CreateOrganisationRequest organisationRequest)
         {
-            return organisationStore.UpdateOrganisation(organisation);
+            return organisationStore.UpdateOrganisation(organisationRequest);
         }
         public string DeleteOrganisation(Guid organisationId)
         {
@@ -50,13 +50,13 @@
             return organisationStore.GetRoleByUserId(userId);
         }
 
-        public string AddPost(Post post)
+        public string AddPost(CreatePostRequest createPostRequest)
         {
-            return organisationStore.AddPost(post);
+            return organisationStore.AddPost(createPostRequest);
         }
-        public string UpdatePost(Post post)
+        public string UpdatePost(CreatePostRequest createPostRequest)
         {
-            return organisationStore.UpdatePost(post);
+            return organisationStore.UpdatePost(createPostRequest);
         }
         public string DeletePost(Guid postId, Guid companyId)
         {

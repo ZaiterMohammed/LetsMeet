@@ -2,8 +2,13 @@
 {
 	using System;
 
-	public class CreatePostRequest
-    {
+	public class Post
+	{
+		public Guid PostId
+		{
+			get;
+			set;
+		}
 
 		public string PostTitle
 		{
@@ -12,6 +17,18 @@
 		}
 
 		public string PostDescription
+		{
+			get;
+			set;
+		}
+
+		public DateTime CreatedDate
+		{
+			get;
+			set;
+		}
+
+		public DateTime ModifiedDate
 		{
 			get;
 			set;

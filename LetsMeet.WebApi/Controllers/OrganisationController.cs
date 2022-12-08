@@ -15,20 +15,20 @@
 
         [HttpPost]
         [Route("api/organization")]
-        public IActionResult AddOrganisation([FromBody] Organisation organisation)
+        public IActionResult AddOrganisation([FromBody] CreateOrganisationRequest organisationRequest)
         {
-            return Ok(organisationManager.AddOrganisation(organisation));
+            return Ok(organisationManager.AddOrganisation(organisationRequest));
         }
 
         [HttpPut]
         [Route("api/organization")]
-        public IActionResult UpdateOrganisation([FromBody] Organisation organisation)
+        public IActionResult UpdateOrganisation([FromBody] CreateOrganisationRequest organisationRequest)
         {
-            return Ok(organisationManager.UpdateOrganisation(organisation));
+            return Ok(organisationManager.UpdateOrganisation(organisationRequest));
         }
 
         [HttpDelete]
-        [Route("api/organization/{organisationId}")]
+        [Route("api/organization/{organizationId}")]
         public IActionResult DeleteOrganisation([FromRoute] Guid organizationId)
         {
             return Ok(organisationManager.DeleteOrganisation(organizationId));
@@ -58,16 +58,16 @@
 
         [HttpPost]
         [Route("api/organization/post")]
-        public IActionResult AddPost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        public IActionResult AddPost([FromBody] CreatePostRequest createPostRequest)
         {
-            return Ok(organisationManager.AddPost(post));
+            return Ok(organisationManager.AddPost(createPostRequest));
         }
 
         [HttpPut]
         [Route("api/organization/post")]
-        public IActionResult UpdatePost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        public IActionResult UpdatePost([FromBody] CreatePostRequest createPostRequest)
         {
-            return Ok(organisationManager.UpdatePost(post));
+            return Ok(organisationManager.UpdatePost(createPostRequest));
         }
 
         [HttpDelete]

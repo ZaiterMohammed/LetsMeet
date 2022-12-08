@@ -9,7 +9,7 @@
     public class OrganisationStore : IOrganisationStore
     {
 
-        public string AddOrganisation(Organisation organisation)
+        public string AddOrganisation(CreateOrganisationRequest organisationRequest)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -17,11 +17,11 @@
                 string sql = "usp_CreateOrganisation";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationName", organisation.OrganisationName);
-                cmd.Parameters.AddWithValue("@OrganisationTypes", organisation.OrganisationTypes);
-                cmd.Parameters.AddWithValue("@OrganisationCategory", organisation.OrganisationCategory);
-                cmd.Parameters.AddWithValue("@CreatedDate", organisation.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", organisation.ModifiedDate);
+                cmd.Parameters.AddWithValue("@OrganisationName", organisationRequest.OrganisationName);
+                cmd.Parameters.AddWithValue("@OrganisationTypes", organisationRequest.OrganisationTypes);
+                cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
+                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -36,7 +36,7 @@
                 return (ex.Message.ToString());
             }
         }
-        public string UpdateOrganisation(Organisation organisation)
+        public string UpdateOrganisation(CreateOrganisationRequest organisationRequest)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -44,11 +44,10 @@
                 string sql = "usp_UpdateOrganisation";
                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationName", organisation.OrganisationName);
-                cmd.Parameters.AddWithValue("@OrganisationTypes", organisation.OrganisationTypes);
-                cmd.Parameters.AddWithValue("@OrganisationCategory", organisation.OrganisationCategory);
-                cmd.Parameters.AddWithValue("@CreatedDate", organisation.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", organisation.ModifiedDate);
+                cmd.Parameters.AddWithValue("@OrganisationName", organisationRequest.OrganisationName);
+                cmd.Parameters.AddWithValue("@OrganisationTypes", organisationRequest.OrganisationTypes);
+                cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -189,7 +188,7 @@
 
 
 
-        public string AddPost(Post post)
+        public string AddPost(CreatePostRequest createPostRequest)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -197,13 +196,13 @@
                 string sql = "usp_CreatePost";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostTitle", post.PostTitle);
-                cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
-                cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
-                cmd.Parameters.AddWithValue("@CreatedBy", post.CreatedBy);
-                cmd.Parameters.AddWithValue("@UpdatedBy", post.UpdatedBy);
-                cmd.Parameters.AddWithValue("@OwnerTypes", post.OwnerTypes);
+                cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
+                cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
+                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
+                cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
+                cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -218,7 +217,7 @@
                 return (ex.Message.ToString());
             }
         }
-        public string UpdatePost(Post post)
+        public string UpdatePost(CreatePostRequest createPostRequest)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -226,13 +225,12 @@
                 string sql = "usp_UpdatePost";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostTitle", post.PostTitle);
-                cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
-                cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
-                cmd.Parameters.AddWithValue("@CreatedBy", post.CreatedBy);
-                cmd.Parameters.AddWithValue("@UpdatedBy", post.UpdatedBy);
-                cmd.Parameters.AddWithValue("@OwnerTypes", post.OwnerTypes);
+                cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
+                cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
+                cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
+                cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();

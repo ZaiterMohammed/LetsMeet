@@ -6,7 +6,6 @@
  @IsFeatured int,
  @CityId uniqueidentifier,
  @CountryId uniqueidentifier,
- @CreatedDate date,
  @ModifiedDate date
  
 AS
@@ -14,7 +13,7 @@ AS
  
 
  update Users
- set FirstName = @FirstName, LastName = @LastName , Age = @Age  , IsFeatured = @IsFeatured  , CreatedDate = @CreatedDate , ModifiedDate = @ModifiedDate
+ set FirstName = @FirstName, LastName = @LastName , Age = @Age  , IsFeatured = @IsFeatured  , ModifiedDate = @ModifiedDate
  where UserId = @UserId
 
  END

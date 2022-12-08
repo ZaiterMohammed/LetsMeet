@@ -8,7 +8,7 @@
 
     public class UserStore : IUserStore
     {
-        public string AddUser(User user)
+        public string AddUser(CreateRequestUser createRequestUser)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -16,14 +16,14 @@
                 string sql = "usp_CreateUser";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", user.LastName);
-                cmd.Parameters.AddWithValue("@Age", user.Age);
-                cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                 cmd.Parameters.AddWithValue("@Country", user.Country.CountryName);
-                 cmd.Parameters.AddWithValue("@City", user.City.CityName);
-                cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
+                cmd.Parameters.AddWithValue("@FirstName", createRequestUser.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", createRequestUser.LastName);
+                cmd.Parameters.AddWithValue("@Age", createRequestUser.Age);
+                cmd.Parameters.AddWithValue("@IsFetured", createRequestUser.IsFeatured);
+                 cmd.Parameters.AddWithValue("@Country", createRequestUser.CountryId);
+                 cmd.Parameters.AddWithValue("@City", createRequestUser.CityId);
+                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -39,7 +39,7 @@
             }
         }
 
-        public string UpdateUser(User user)
+        public string UpdateUser(CreateRequestUser createRequestUser)
         {
             using SqlConnection con = new SqlConnection();
             try
@@ -47,14 +47,13 @@
                 string sql = "usp_UpdateUser";
                 using SqlCommand cmd = new SqlCommand(sql, con); 
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", user.LastName);
-                cmd.Parameters.AddWithValue("@Age", user.Age);
-                cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                cmd.Parameters.AddWithValue("@Country", user.Country.CountryName);
-                cmd.Parameters.AddWithValue("@City", user.City.CityName);
-                cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
-                cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
+                cmd.Parameters.AddWithValue("@FirstName", createRequestUser.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", createRequestUser.LastName);
+                cmd.Parameters.AddWithValue("@Age", createRequestUser.Age);
+                cmd.Parameters.AddWithValue("@IsFetured", createRequestUser.IsFeatured);
+                cmd.Parameters.AddWithValue("@Country", createRequestUser.CountryId);
+                cmd.Parameters.AddWithValue("@City", createRequestUser.CityId);
+                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();

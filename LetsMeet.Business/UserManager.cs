@@ -14,14 +14,14 @@
             this.userStore = userStore;
         }
 
-        public string AddUser(User user)
+        public string AddUser(CreateRequestUser createRequestUser)
         {
-            return userStore.AddUser(user);
+            return userStore.AddUser(createRequestUser);
         }
 
-        public string UpdateUser(User user)
+        public string UpdateUser(CreateRequestUser createRequestUser)
         {
-            return userStore.UpdateUser(user);
+            return userStore.UpdateUser(createRequestUser);
         }
 
         public string DeleteUser(Guid Id)

@@ -2,14 +2,14 @@
  @PostTitle nvarchar(50),  
  @CreatedDate date,
  @ModifiedDate date,
- @UserId uniqueidentifier,
+ @PostDescription nvarchar(50),
  @OwnerId uniqueidentifier,
- @PostDescription nvarchar(50)
-
+ @CreatedBy uniqueidentifier,
+ @UpdatedBy uniqueidentifier
 
 AS
  BEGIN 
- Insert into Post (PostId,PostTitle,CreatedDate,ModifiedDate,UserId,OwnerId,PostDescription)
- values(newId(),@PostTitle,@CreatedDate,@ModifiedDate,@UserId,@OwnerId,@PostDescription)  
- END
+ Insert into Post (PostId,PostTitle,CreatedDate,ModifiedDate,PostDescription,OwnerId,CreatedBy,UpdatedBy)
+ values(newId(),@PostTitle,@CreatedDate,@ModifiedDate,@PostDescription,@OwnerId,@CreatedBy,@UpdatedBy)  
+END
       

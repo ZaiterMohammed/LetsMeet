@@ -4,14 +4,13 @@
  @CompanyTypes nvarchar(50),  
  @CityId uniqueidentifier,
  @CountryId uniqueidentifier,
- @CreatedDate date,
  @ModifiedDate date
  
 AS
  BEGIN 
 
  update Company
- set CompanyName = @CompanyName , CompanyTypes = @CompanyTypes, CreatedDate = @CreatedDate, ModifiedDate = @ModifiedDate
+ set CompanyName = @CompanyName , CompanyTypes = @CompanyTypes, ModifiedDate = @ModifiedDate
  where CompanyId = @CompanyId
 
  END

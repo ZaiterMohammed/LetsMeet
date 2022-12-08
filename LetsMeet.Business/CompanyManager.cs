@@ -15,14 +15,14 @@
         }
 
 
-        public string AddCompany(CreateCompanyRequest company)
+        public string AddCompany(CreateCompanyRequest createCompanyRequest)
         {
-            return companyStore.AddCompany(company);
+            return companyStore.AddCompany(createCompanyRequest);
         }
 
-        public string UpdateCompany(CreateCompanyRequest company)
+        public string UpdateCompany(CreateCompanyRequest createCompanyRequest)
         {
-            return companyStore.UpdateCompany(company);
+            return companyStore.UpdateCompany(createCompanyRequest);
         }
         public string DeleteCompany(Guid companyId)
         {
@@ -55,13 +55,13 @@
         }
 
 
-        public string AddPost(Post post)
+        public string AddPost(CreatePostRequest createPostRequest)
         {
-            return companyStore.AddPost(post);
+            return companyStore.AddPost(createPostRequest);
         }
-        public string UpdatePost(Post post)
+        public string UpdatePost(CreatePostRequest createPostRequest)
         {
-            return companyStore.UpdatePost(post);
+            return companyStore.UpdatePost(createPostRequest);
         }
         public string DeletePost(Guid postId, Guid companyId)
         {
