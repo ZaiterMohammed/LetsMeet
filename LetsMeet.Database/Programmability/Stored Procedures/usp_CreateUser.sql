@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreateUser]
+﻿CREATE PROCEDURE [dbo].[usp_CreateUser]
  @FirstName   nvarchar(50),  
  @LastName nvarchar(50),  
  @Age int,  

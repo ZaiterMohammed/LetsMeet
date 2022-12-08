@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteOrganisation]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteOrganisation]
  @OrganisationId uniqueidentifier 
 
 AS

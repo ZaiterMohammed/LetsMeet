@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UpdateCompany]
+﻿CREATE PROCEDURE [dbo].[usp_UpdateCompany]
  @CompanyId  uniqueidentifier, 
  @CompanyName nvarchar(50),  
  @CompanyTypes nvarchar(50),  

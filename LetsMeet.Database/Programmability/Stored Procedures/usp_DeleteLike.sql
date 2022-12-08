@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteLike]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteLike]
  @LikeId uniqueidentifier 
 
 AS

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UpdateRole]
+﻿CREATE PROCEDURE [dbo].[usp_UpdateRole]
 	@RoleId uniqueidentifier,
 	@RoleName nvarchar(50),
 	@IsVerified int,

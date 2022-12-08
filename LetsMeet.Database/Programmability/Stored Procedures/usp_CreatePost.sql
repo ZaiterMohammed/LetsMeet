@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreatePost]
+﻿CREATE PROCEDURE [dbo].[usp_CreatePost]
  @PostTitle nvarchar(50),  
  @CreatedDate date,
  @ModifiedDate date,

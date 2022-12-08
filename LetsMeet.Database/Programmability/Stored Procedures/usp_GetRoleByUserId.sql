@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[GetRoleByUserId]
+﻿CREATE PROCEDURE [dbo].[usp_GetRoleByUserId]
 @UserId uniqueidentifier
 
 

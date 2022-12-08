@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteRole]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteRole]
  @RoleId uniqueidentifier 
 
 AS

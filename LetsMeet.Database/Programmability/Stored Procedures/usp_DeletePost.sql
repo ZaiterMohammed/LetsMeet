@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeletePost]
+﻿CREATE PROCEDURE [dbo].[usp_DeletePost]
  @PostId uniqueidentifier 
 
 AS

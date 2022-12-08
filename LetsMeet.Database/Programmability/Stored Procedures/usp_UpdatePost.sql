@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UpdatePost]
+﻿CREATE PROCEDURE [dbo].[usp_UpdatePost]
  @PostId  uniqueidentifier, 
  @PostTitle nvarchar(50),  
  @CreatedDate date,

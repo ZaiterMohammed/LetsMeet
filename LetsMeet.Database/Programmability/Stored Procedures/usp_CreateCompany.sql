@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreateCompany]
+﻿CREATE PROCEDURE [dbo].[usp_CreateCompany]
  @CompanyName nvarchar(50),  
  @CompanyTypes nvarchar(50),  
  @CityId uniqueidentifier,

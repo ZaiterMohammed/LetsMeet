@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[CreateLike]
+﻿CREATE PROCEDURE [dbo].[usp_CreateLike]
 	@UserId uniqueidentifier,
 	@PostId uniqueidentifier
 AS
