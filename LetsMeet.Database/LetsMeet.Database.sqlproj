@@ -83,6 +83,12 @@
     <Build Include="Tables\Owner.sql" />
     <Build Include="Programmability\Stored Procedures\CreateLike.sql" />
     <Build Include="Programmability\Stored Procedures\DeleteLike.sql" />
+    <Build Include="Tables\Role.sql" />
+    <Build Include="Programmability\Stored Procedures\CreateRole.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateRole.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteRole.sql" />
+    <Build Include="Programmability\Stored Procedures\GetRoleByUserId.sql" />
+    <Build Include="Programmability\Stored Procedures\GetPostById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="LetsMeet.Database.refactorlog" />
