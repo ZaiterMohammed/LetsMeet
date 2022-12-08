@@ -126,4 +126,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OrganisationCategory" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="213bf0e1-1154-4903-9117-82ee8c5adb09" ChangeDateTime="12/08/2022 08:05:40">
+    <Property Name="ElementName" Value="[dbo].[Post].[OwnerId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="942f38b4-70d6-46fe-8a5f-a8137746536e" ChangeDateTime="12/08/2022 08:08:09">
+    <Property Name="ElementName" Value="[dbo].[Post].[OwnerType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrganizationId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b12b18d9-7319-4fef-8984-31d90d4d6b41" ChangeDateTime="12/08/2022 08:08:13">
+    <Property Name="ElementName" Value="[dbo].[Post].[CompanyId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="894ac158-4fd0-48df-a46e-8b6d26888ebd" ChangeDateTime="12/08/2022 08:08:57">
+    <Property Name="ElementName" Value="[dbo].[Post].[OrganizationId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrganisationId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="69e5c0e0-8373-4b74-9bb4-1deaa507ed2d" ChangeDateTime="12/08/2022 08:10:39">
+    <Property Name="ElementName" Value="[dbo].[FK_Post_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[Post]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[UserId]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="90d3e559-deec-4ce7-9c0d-c874cd9158e8" ChangeDateTime="12/08/2022 08:51:52">
+    <Property Name="ElementName" Value="[dbo].[Like].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Like]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LikeId" />
+  </Operation>
 </Operations>

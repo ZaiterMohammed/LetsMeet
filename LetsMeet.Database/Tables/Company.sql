@@ -6,5 +6,8 @@
     [CityId] UNIQUEIDENTIFIER NULL,  -- should be foreign key
     [CountryId] UNIQUEIDENTIFIER NULL, -- should be foreign key
     [CreatedDate] DATE NULL, 
-    [ModifiedDate] DATE NULL
+    [ModifiedDate] DATE NULL,
+
+    CONSTRAINT [FK_Park_ToCity] FOREIGN KEY ([CityId]) REFERENCES [City]([CityId]), 
+    CONSTRAINT [FK_Park_ToCountry] FOREIGN KEY ([CountryId]) REFERENCES [Country]([CountryId])
 )

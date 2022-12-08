@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[Like]
+(
+	[LikeId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [UserId] UNIQUEIDENTIFIER NULL, 
+    [PostId] UNIQUEIDENTIFIER NULL,
+
+    CONSTRAINT [FK_Like_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId]), 
+    CONSTRAINT [FK_Like_ToPost] FOREIGN KEY ([PostId]) REFERENCES [Post]([PostId])
+)

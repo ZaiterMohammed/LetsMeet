@@ -4,13 +4,14 @@
  @CompanyId uniqueidentifier,
  @CreatedDate date,
  @ModifiedDate date,
+ @UserId uniqueidentifier,
  @OrganisationId uniqueidentifier,
  @PostDescription nvarchar(50)
 
 AS
 BEGIN
 update Post
- set PostId = @PostId,PostTitle = @PostTitle , PostDescription = @PostDescription -- you should not update postId
+ set PostTitle = @PostTitle , PostDescription = @PostDescription -- you should not update postId
  where PostId = @PostId
 
  END
