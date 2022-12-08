@@ -1,12 +1,10 @@
-﻿using LetsMeet.Abstractions;
-using LetsMeet.Abstractions.Managers;
-using LetsMeet.Abstractions.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LetsMeet.Business
+﻿namespace LetsMeet.Business
 {
+    using LetsMeet.Abstractions.Managers;
+    using LetsMeet.Abstractions.Models;
+    using LetsMeet.Abstractions.Store;
+    using System;
+
     public class UserManager : IUserManager
     {
         public IUserStore userStore;

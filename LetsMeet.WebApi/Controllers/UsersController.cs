@@ -11,7 +11,7 @@
 
         public UsersController(IUserManager userManager)
         {
-            userManager = userManager;
+            this.userManager = userManager;
         }
 
         [HttpPost]

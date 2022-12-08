@@ -1,10 +1,9 @@
-﻿using LetsMeet.Abstractions.Managers;
-using LetsMeet.Abstractions.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.Design;
-
-namespace LetsMeet.WebApi.Controllers
+﻿namespace LetsMeet.WebApi.Controllers
 {
+    using LetsMeet.Abstractions.Managers;
+    using LetsMeet.Abstractions.Models;
+    using Microsoft.AspNetCore.Mvc;
+
     public class PostController : Controller
     {
         private readonly IPostManager postManager;
@@ -12,29 +11,6 @@ namespace LetsMeet.WebApi.Controllers
         {
             this.postManager = postManager;
         }
-
-
-        [HttpPost]
-        [Route("api/post")]
-        public IActionResult AddPost([FromBody] Post post) //post should be in CompanyController and OrganizationController
-        {
-            return Ok(postManager.AddPost(post));
-        }
-
-        [HttpPut]
-        [Route("api/post")]
-        public IActionResult UpdatePost([FromBody] Post post) //post should be in CompanyController and OrganizationController
-        {
-            return Ok(postManager.UpdatePost(post));
-        }
-
-        [HttpDelete]
-        [Route("api/post/{postId}/{companyId}")] 
-        public IActionResult DeletePost([FromRoute] Guid postId, Guid companyId) //post should be in CompanyController and OrganizationController
-        {
-            return Ok(postManager.DeletePost(postId, companyId));
-        }
-
 
         [HttpPost]
         [Route("api/post")]
@@ -44,10 +20,10 @@ namespace LetsMeet.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("api/post/{postActionId}")]
-        public IActionResult DeleteLike([FromRoute] Guid postActionId)
+        [Route("api/post/{postId}/{userId}")]
+        public IActionResult DeleteLike([FromRoute] Guid postId, [FromRoute] Guid userId)
         {
-            return Ok(postManager.DeleteLike(postActionId));
+            return Ok(postManager.DeleteLike(postId, userId));
         }
     }
 }

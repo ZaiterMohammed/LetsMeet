@@ -1,28 +1,27 @@
 ﻿namespace LetsMeet.Store
 {
+    using LetsMeet.Abstractions.Models;
+    using LetsMeet.Abstractions.Store;
     using System;
-    using System.Collections.Generic;
-    using System.Text;
     using System.Data;
     using System.Data.SqlClient;
-    using LetsMeet.Abstractions.Models;
-    using LetsMeet.Abstractions;
 
-    public class UserStore : IUserStore //Wrong implementation
+    public class UserStore : IUserStore
     {
         public string AddUser(User user)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                //usp == user stored procedure
                 string sql = "usp_CreateUser";
-                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Age", user.Age);
                 cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                // cmd.Parameters.AddWithValue("@Location", user.Location);
+                 cmd.Parameters.AddWithValue("@Country", user.Country.CountryName);
+                 cmd.Parameters.AddWithValue("@City", user.City.CityName);
                 cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
                 con.Open();
@@ -42,16 +41,18 @@
 
         public string UpdateUser(User user)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
                 string sql = "usp_UpdateUser";
-                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
+                using SqlCommand cmd = new SqlCommand(sql, con); 
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Age", user.Age);
                 cmd.Parameters.AddWithValue("@IsFetured", user.IsFeatured);
-                // cmd.Parameters.AddWithValue("@Location", user.Location);
+                cmd.Parameters.AddWithValue("@Country", user.Country.CountryName);
+                cmd.Parameters.AddWithValue("@City", user.City.CityName);
                 cmd.Parameters.AddWithValue("@CreatedDate", user.CreatedDate);
                 cmd.Parameters.AddWithValue("@ModifiedDate", user.ModifiedDate);
                 con.Open();
@@ -71,10 +72,11 @@
 
         public string DeleteUser(Guid userId)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "DeleteUser";
-                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
+                string sql = "usp_DeleteUser";
+                using SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 con.Open();

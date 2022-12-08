@@ -1,7 +1,6 @@
 ﻿namespace LetsMeet.Abstractions.Models
 {
 	using System;
-	using System.ComponentModel;
 
 	public class Organisation
 	{

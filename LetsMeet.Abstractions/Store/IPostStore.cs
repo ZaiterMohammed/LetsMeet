@@ -5,11 +5,7 @@
 
     public interface IPostStore
     {
-        public string AddPost(Post post);
-        public string UpdatePost(Post post);
-        public string DeletePost(Guid postId, Guid companyId);
-        public Post GetPostById(Guid postId);
         public string AddLike(PostAction postAction);
-        public string DeleteLike(Guid postActionId);
+        public string DeleteLike(Guid postId, Guid userId);
     }
 }
