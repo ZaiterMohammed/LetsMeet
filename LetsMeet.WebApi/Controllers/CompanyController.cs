@@ -1,9 +1,9 @@
-﻿using LetsMeet.Abstractions.Managers;
-using LetsMeet.Abstractions.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace LetsMeet.WebApi.Controllers
+﻿namespace LetsMeet.WebApi.Controllers
 {
+    using LetsMeet.Abstractions.Managers;
+    using LetsMeet.Abstractions.Models;
+    using Microsoft.AspNetCore.Mvc;
+
     public class CompanyController : Controller
     {
         private readonly ICompanyManager companyManager;
@@ -36,17 +36,17 @@ namespace LetsMeet.WebApi.Controllers
 
 
         [HttpPost]
-        [Route("api/company/{id}/users/{userId}")]
+        [Route("api/company/{id}/users/{userId}")]       
         public IActionResult CreateRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
-            return Ok(companyManager.CreateRole(role));
+            return Ok(companyManager.CreateRole(id, userId, roleName));
         }
 
         [HttpPut]
         [Route("api/company/{id}/users/{userId}")]
         public IActionResult AcceptRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
-            return Ok(companyManager.AcceptRole(role));
+            return Ok(companyManager.AcceptRole(id, userId, roleName));
         }
 
 

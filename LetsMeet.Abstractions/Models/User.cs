@@ -1,7 +1,6 @@
 ﻿namespace LetsMeet.Abstractions.Models
 {
 	using System;
-	using LetsMeet.Abstractions.Models;
 
 	public class User
 	{

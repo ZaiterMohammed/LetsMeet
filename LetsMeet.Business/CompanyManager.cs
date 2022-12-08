@@ -4,7 +4,6 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
-    using System.Runtime.ConstrainedExecution;
 
     public class CompanyManager : ICompanyManager
     {
@@ -29,25 +28,20 @@
         {
             return companyStore.DeleteCompany(companyId);
         }
-        public string CreateRole(Role role)
+        public string CreateRole(Guid id, Guid userId, string roleName)
         {
-            if (role == null)
-            {
-              throw new ArgumentNullException("role Cannot be bull");
-            }
-
-            var RoleByUserId = GetRoleByUserId(role.UserId);
+            var RoleByUserId = GetRoleByUserId(userId);
 
             if (RoleByUserId == null)
             {
                 throw new ArgumentNullException("role Cannot be bull");
             }
-            return companyStore.CreateRole(role);
+            return companyStore.CreateRole(id, userId, roleName);
         }
 
-        public string AcceptRole(Role role)
+        public string AcceptRole(Guid id, Guid userId, string roleName)
         {
-            return companyStore.AcceptRole(role);
+            return companyStore.AcceptRole(id, userId, roleName);
         }
 
         public string DeleteRole(Guid roleId)
@@ -79,7 +73,7 @@
                 throw new NullReferenceException("The specified post cannot be undefined or null.");
             }
 
-            if (companyId != GetPostById(postId).CompanyId)
+            if (companyId != GetPostById(postId).CreatedBy)
             {
                 return "cannet delete this post";
             }

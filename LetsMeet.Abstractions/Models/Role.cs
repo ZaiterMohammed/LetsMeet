@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LetsMeet.Abstractions.Models
+﻿namespace LetsMeet.Abstractions.Models
 {
+    using System;
+
     public class Role
     {
+        public Guid RoleId
+        {
+            get;
+            set;
+        }
         public string RoleName
         {
             get;
