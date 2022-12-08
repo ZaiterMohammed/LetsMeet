@@ -8,14 +8,14 @@
 
     public class OrganisationStore : IOrganisationStore
     {
-        SqlConnection con = new SqlConnection();
 
         public string AddOrganisation(Organisation organisation)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "AddOrganisation";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_CreateOrganisation";
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@OrganisationName", organisation.OrganisationName);
                 cmd.Parameters.AddWithValue("@OrganisationTypes", organisation.OrganisationTypes);
@@ -38,10 +38,11 @@
         }
         public string UpdateOrganisation(Organisation organisation)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "UpdateOrganisation";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_UpdateOrganisation";
+               using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@OrganisationName", organisation.OrganisationName);
                 cmd.Parameters.AddWithValue("@OrganisationTypes", organisation.OrganisationTypes);
@@ -64,10 +65,11 @@
         }
         public string DeleteOrganisation(Guid organisationId)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "DeleteOrganisation";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_DeleteOrganisation";
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@OrganisationId", organisationId);
                 con.Open();
@@ -87,10 +89,11 @@
 
         public string CreateRole(Role role)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "AddRole";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_CreateRole";
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@RoleName", role.RoleName);
                 cmd.Parameters.AddWithValue("@IsVerified", role.IsVerified);
@@ -115,10 +118,11 @@
 
         public string AcceptRole(Role role)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "UpdateRole";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_UpdateRole";
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@RoleName", role.RoleName);
                 cmd.Parameters.AddWithValue("@IsVerified", role.IsVerified);
@@ -142,10 +146,11 @@
 
         public string DeleteRole(Guid roleId)
         {
+            using SqlConnection con = new SqlConnection();
             try
             {
-                string sql = "DeleteRole";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_DeleteRole";
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@RoleId", roleId);
                 con.Open();
@@ -165,8 +170,10 @@
 
         public Role GetRoleByUserId(Guid userId)
         {
-            string sql = "GetRoleByUserId";
-            SqlCommand cmd = new SqlCommand(sql, con);
+            using SqlConnection con = new SqlConnection();
+
+            string sql = "usp_GetRoleByUserId";
+            using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@UserId", userId);
             con.Open();
@@ -186,5 +193,116 @@
             }
             return role;
         }
+
+
+
+        public string AddPost(Post post)
+        {
+            using SqlConnection con = new SqlConnection();
+            try
+            {
+                string sql = "usp_CreatePost";
+                using SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PostTitle", post.PostTitle);
+                cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
+                cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
+                cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
+                cmd.Parameters.AddWithValue("@CompanyId", post.CompanyId);
+                cmd.Parameters.AddWithValue("@OrganisationId", post.OrganisationId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return ("Post save Successfully");
+            }
+            catch (Exception ex)
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                return (ex.Message.ToString());
+            }
+        }
+        public string UpdatePost(Post post)
+        {
+            using SqlConnection con = new SqlConnection();
+            try
+            {
+                string sql = "usp_UpdatePost";
+                using SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PostTitle", post.PostTitle);
+                cmd.Parameters.AddWithValue("@PostDescription", post.PostDescription);
+                cmd.Parameters.AddWithValue("@CreatedDate", post.CreatedDate);
+                cmd.Parameters.AddWithValue("@ModifiedDate", post.ModifiedDate);
+                cmd.Parameters.AddWithValue("@CompanyId", post.CompanyId);
+                cmd.Parameters.AddWithValue("@OrganisationId", post.OrganisationId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return ("Post was Successfully Updated");
+            }
+            catch (Exception ex)
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                return (ex.Message.ToString());
+            }
+        }
+
+        public string DeletePost(Guid postId, Guid companyId)
+        {
+            using SqlConnection con = new SqlConnection();
+            try
+            {
+                string sql = "usp_DeletePost";
+                using SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PostId", postId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return ("Post was Successfully Deleted");
+            }
+            catch (Exception ex)
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                return (ex.Message.ToString());
+            }
+        }
+
+        public Post GetPostById(Guid postId)
+        {
+            using SqlConnection con = new SqlConnection();
+
+            string sql = "usp_GetPostById";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostId", postId);
+            con.Open();
+            var post = new Post();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                post = new Post()
+                {
+                    PostId = reader.GetGuid("PostId"),
+                    PostTitle = reader.GetString("PostTitle"),
+                    PostDescription = reader.GetString("PostDescription"),
+                    CreatedDate = reader.GetDateTime("CreatedDate"),
+                    ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                    CompanyId = reader.GetGuid("CompanyId"),
+                    OrganisationId = reader.GetGuid("OrganisationId"),
+                };
+            }
+            return post;
+        }
+
+
     }
 }

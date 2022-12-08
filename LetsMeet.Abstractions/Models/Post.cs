@@ -34,16 +34,22 @@
 			set;
 		}
 
-		public Guid CompanyId
-		{
-			get;
-			set;
-		}
+        public Guid CreatedBy
+        {
+            get;
+            set;
+        }
 
-		public Guid OrganisationId
-		{
-			get;
-			set;
-		}
-	}
+        public Guid UpdatedBy
+        {
+            get;
+            set;
+        }
+
+        public OwnerTypes OwnerTypes
+        {
+            get;
+            set;
+        }
+    }
 }

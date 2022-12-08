@@ -55,5 +55,27 @@ namespace LetsMeet.WebApi.Controllers
         {
             return Ok(organisationManager.DeleteRole(roleId));
         }
+
+
+        [HttpPost]
+        [Route("api/post")]
+        public IActionResult AddPost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        {
+            return Ok(organisationManager.AddPost(post));
+        }
+
+        [HttpPut]
+        [Route("api/post")]
+        public IActionResult UpdatePost([FromBody] Post post) //post should be in CompanyController and OrganizationController
+        {
+            return Ok(organisationManager.UpdatePost(post));
+        }
+
+        [HttpDelete]
+        [Route("api/post/{postId}/{companyId}")]
+        public IActionResult DeletePost([FromRoute] Guid postId, Guid companyId) //post should be in CompanyController and OrganizationController
+        {
+            return Ok(organisationManager.DeletePost(postId, companyId));
+        }
     }
 }

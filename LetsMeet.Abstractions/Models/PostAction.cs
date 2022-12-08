@@ -15,24 +15,5 @@
             get;
             set;
         }
-
-        //should be removed
-        //public Guid CompanyId
-        //{
-        //    get;
-        //    set;
-        //}
-        //public Guid OrganisationId
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public int Like
-        //{
-        //    get;
-        //    set;
-        //}
-
     }
 }

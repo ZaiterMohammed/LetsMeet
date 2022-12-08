@@ -12,5 +12,10 @@
         public string AcceptRole(Role role);
         public string DeleteRole(Guid roleId);
         public Role GetRoleByUserId(Guid userId);
+        public string AddPost(Post post);
+        public string UpdatePost(Post post);
+        public string DeletePost(Guid postId, Guid companyId);
+        public Post GetPostById(Guid postId);
+
     }
 }
