@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[Role]
+(
+	[RoleId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [RoleName] NVARCHAR(50) NULL, 
+    [IsVerified] INT NULL, 
+    [UserId] UNIQUEIDENTIFIER NULL, 
+    [OwnerId] UNIQUEIDENTIFIER NULL
+
+    CONSTRAINT [FK_Role_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId]),
+    CONSTRAINT [FK_Role_ToOwner] FOREIGN KEY ([OwnerId]) REFERENCES [Owner]([OwnerId])
+)
