@@ -59,27 +59,26 @@
     <Folder Include="Tables" />
     <Folder Include="Programmability" />
     <Folder Include="Programmability\Stored Procedures" />
-    <Folder Include="Stored.Procedures" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\User.sql" />
+    <Build Include="Tables\Users.sql" />
     <Build Include="Tables\City.sql" />
     <Build Include="Tables\Country.sql" />
     <Build Include="Tables\Company.sql" />
     <Build Include="Tables\Post.sql" />
-    <Build Include="Stored.Procedures\AddUser.sql" />
-    <Build Include="Stored.Procedures\DeleteUser.sql" />
-    <Build Include="Stored.Procedures\UpdateUser.sql" />
-    <Build Include="Stored.Procedures\AddCompany.sql" />
-    <Build Include="Stored.Procedures\DeleteCompany.sql" />
-    <Build Include="Stored.Procedures\UpdateCompany.sql" />
-    <Build Include="Stored.Procedures\AddOrganisation.sql" />
-    <Build Include="Stored.Procedures\DeleteOrganisation.sql" />
-    <Build Include="Stored.Procedures\UpdateOrganisation.sql" />
-    <Build Include="Stored.Procedures\AddPost.sql" />
-    <Build Include="Stored.Procedures\DeletePost.sql" />
-    <Build Include="Stored.Procedures\UpdatePost.sql" />
     <Build Include="Tables\Organisation.sql" />
+    <Build Include="Programmability\Stored Procedures\AddCompany.sql" />
+    <Build Include="Programmability\Stored Procedures\AddOrganisation.sql" />
+    <Build Include="Programmability\Stored Procedures\AddPost.sql" />
+    <Build Include="Programmability\Stored Procedures\AddUser.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteCompany.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteOrganisation.sql" />
+    <Build Include="Programmability\Stored Procedures\DeletePost.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteUser.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateCompany.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateOrganisation.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdatePost.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="LetsMeet.Database.refactorlog" />

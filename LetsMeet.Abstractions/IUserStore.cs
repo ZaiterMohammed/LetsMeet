@@ -7,5 +7,7 @@
 
     public interface IUserStore
     {
+
+        // you should implement user store
     }
 }

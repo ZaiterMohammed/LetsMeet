@@ -36,18 +36,19 @@ namespace LetsMeet.WebApi.Controllers
 
 
         [HttpPost]
-        [Route("api/company")]
-        public IActionResult CreateRole([FromBody] Role role)
+        [Route("api/company/{id}/users/{userId}")]
+        public IActionResult CreateRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
             return Ok(companyManager.CreateRole(role));
         }
 
         [HttpPut]
-        [Route("api/company")]
-        public IActionResult AcceptRole([FromBody] Role role)
+        [Route("api/company/{id}/users/{userId}")]
+        public IActionResult AcceptRole([FromRoute] Guid id, [FromRoute] Guid userId, [FromQuery] string roleName)
         {
             return Ok(companyManager.AcceptRole(role));
         }
+
 
         [HttpDelete]
         [Route("api/company/{roleId}")]

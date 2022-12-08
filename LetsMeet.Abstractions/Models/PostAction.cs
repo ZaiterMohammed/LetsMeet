@@ -4,11 +4,6 @@
 
     public class PostAction
     {
-        public Guid PostActionId
-        {
-            get;
-            set;
-        }
         public Guid PostId
         {
             get;
@@ -20,22 +15,24 @@
             get;
             set;
         }
-        public Guid CompanyId
-        {
-            get;
-            set;
-        }
-        public Guid OrganisationId
-        {
-            get;
-            set;
-        }
 
-        public int Like
-        {
-            get;
-            set;
-        }
+        //should be removed
+        //public Guid CompanyId
+        //{
+        //    get;
+        //    set;
+        //}
+        //public Guid OrganisationId
+        //{
+        //    get;
+        //    set;
+        //}
+
+        //public int Like
+        //{
+        //    get;
+        //    set;
+        //}
 
     }
 }

@@ -3,5 +3,5 @@
 
 AS
  BEGIN 
-  delete from User where UserId = @UserId 
+  delete from Users where UserId = @UserId 
  END

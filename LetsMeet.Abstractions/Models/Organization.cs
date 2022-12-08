@@ -23,7 +23,7 @@
 			set;
 		}
 
-		public Category Category
+		public OrganizationCategory Category
 
 		{
 			get;

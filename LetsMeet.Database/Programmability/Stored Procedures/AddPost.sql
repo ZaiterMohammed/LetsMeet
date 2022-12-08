@@ -10,7 +10,7 @@
 
 AS
  BEGIN 
- Insert into Post(PostId,PostTitle,CompanyId,PostDescription,OrganizationId,CreatedDate,ModifiedDate)  
+ Insert into Post (PostId,PostTitle,CompanyId,PostDescription,OrganizationId,CreatedDate,ModifiedDate)  --reflect table changes
  values(@PostId,@PostTitle,@CompanyId,@CreatedDate,@ModifiedDate,@OrganisationId,@PostDescription)  
  END
       

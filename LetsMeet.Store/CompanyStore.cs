@@ -15,7 +15,8 @@
             try
             {
                 string sql = "AddCompany";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                using var con = new SqlConnection(""); //disposing of objects (to clean them from memory)
+                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompanyName", company.CompanyName);
                 cmd.Parameters.AddWithValue("@CompanyTypes", company.CompanyTypes);

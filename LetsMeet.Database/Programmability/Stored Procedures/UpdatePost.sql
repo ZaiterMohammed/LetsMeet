@@ -10,7 +10,7 @@
 AS
 BEGIN
 update Post
- set PostId = @PostId,PostTitle = @PostTitle , PostDescription = @PostDescription
+ set PostId = @PostId,PostTitle = @PostTitle , PostDescription = @PostDescription -- you should not update postId
  where PostId = @PostId
 
  END

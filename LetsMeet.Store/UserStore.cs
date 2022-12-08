@@ -8,14 +8,15 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions;
 
-    public class CompanyStore : IUserStore
+    public class UserStore : IUserStore //Wrong implementation
     {
         public string AddUser(User user)
         {
             try
             {
-                string sql = "AddUser";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                //usp == user stored procedure
+                string sql = "usp_CreateUser";
+                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
@@ -43,8 +44,8 @@
         {
             try
             {
-                string sql = "UpdateUser";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                string sql = "usp_UpdateUser";
+                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
@@ -73,7 +74,7 @@
             try
             {
                 string sql = "DeleteUser";
-                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlCommand cmd = new SqlCommand(sql, con); //connection is not defined
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 con.Open();

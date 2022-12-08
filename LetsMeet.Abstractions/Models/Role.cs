@@ -6,11 +6,6 @@ namespace LetsMeet.Abstractions.Models
 {
     public class Role
     {
-        public Guid RoleId
-        {
-            get;
-            set;
-        }
         public string RoleName
         {
             get;
@@ -18,24 +13,6 @@ namespace LetsMeet.Abstractions.Models
         }
 
         public int IsVerified
-        {
-            get;
-            set;
-        }
-
-        public Guid UserId
-        {
-            get;
-            set;
-        }
-
-        public Guid CompanyId
-        {
-            get;
-            set;
-        }
-
-        public Guid OrganisationId
         {
             get;
             set;

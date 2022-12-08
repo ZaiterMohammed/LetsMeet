@@ -7,32 +7,32 @@
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserManager UserManager;
+        private readonly IUserManager userManager;
 
         public UsersController(IUserManager userManager)
         {
-            UserManager = userManager;
+            userManager = userManager;
         }
 
         [HttpPost]
         [Route("api/users")]
         public IActionResult AddUser([FromBody] User user)
         {
-            return Ok(UserManager.AddUser(user));
+            return Ok(userManager.AddUser(user));
         }
 
         [HttpPut]
         [Route("api/users")]
         public IActionResult UpdateUser([FromBody] User user)
         {
-            return Ok(UserManager.UpdateUser(user));
+            return Ok(userManager.UpdateUser(user));
         }
 
         [HttpDelete]
         [Route("api/users/{id}")]
         public IActionResult DeleteUser([FromRoute] Guid userId)
         {
-            return Ok(UserManager.DeleteUser(userId));
+            return Ok(userManager.DeleteUser(userId));
         }
     }
 }

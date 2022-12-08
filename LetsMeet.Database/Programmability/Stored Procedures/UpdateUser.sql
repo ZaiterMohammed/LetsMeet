@@ -13,8 +13,8 @@ AS
  BEGIN 
  
 
- update User
- set UserId = @UserId,FirstName = @FirstName , IsFeatured = @IsFeatured
+ update Users
+ set UserId = @UserId,FirstName = @FirstName , IsFeatured = @IsFeatured -- you should not update userid
  where UserId = @UserId
 
  END
