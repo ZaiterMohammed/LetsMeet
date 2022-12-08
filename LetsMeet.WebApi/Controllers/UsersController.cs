@@ -31,9 +31,9 @@
 
         [HttpDelete]
         [Route("api/users/{id}")]
-        public IActionResult DeleteUser([FromRoute] Guid id)
+        public IActionResult DeleteUser([FromRoute] Guid userId)
         {
-            return Ok(UserManager.DeleteUser(id));
+            return Ok(UserManager.DeleteUser(userId));
         }
     }
 }
