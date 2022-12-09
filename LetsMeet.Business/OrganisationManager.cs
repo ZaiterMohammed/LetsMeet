@@ -4,6 +4,7 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
+    using System.Collections.Generic;
 
     public class OrganisationManager : IOrganisationManager
     {
@@ -13,14 +14,21 @@
         {
             this.organisationStore = organisationStore;
         }
+        public string AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
+        {
+            //and i can put it in the UserStore when i create a user to each organisation
+           // var users = GetUsersByMunicipalityId(organisationRequest.OrganisationId); //select * from User where OrganisationId = organisationRequest.OrganisationId and IsFeatured = 1
 
-        public string AddOrganisation(CreateOrganisationRequest organisationRequest)
-        {
-            return organisationStore.AddOrganisation(organisationRequest);
+           // if (users.Count > 10)
+           // {
+            //    return organisationStore.AddOrganisation(organisationRequest, IsFeatured);
+           // }
+
+            return organisationStore.AddOrganisation(organisationRequest, 0);
         }
-        public string UpdateOrganisation(CreateOrganisationRequest organisationRequest)
+        public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
         {
-            return organisationStore.UpdateOrganisation(organisationRequest);
+            return organisationStore.UpdateOrganisation(updateOrganisationRequest);
         }
         public string DeleteOrganisation(Guid organisationId)
         {
@@ -78,6 +86,21 @@
         public Post GetPostById(Guid postId)
         {
             return organisationStore.GetPostById(postId);
+        }
+
+        public List<Organisation> GetAllOrganisation()
+        {
+            return organisationStore.GetAllOrganisation();
+        }
+
+        public List<Organisation> GetAllOrganisationNotVerified()
+        {
+            return organisationStore.GetAllOrganisationNotVerified();
+        }
+        public List<Organisation> GetAllOrganisationVerified()
+        {
+            return organisationStore.GetAllOrganisationVerified();
+
         }
 
     }

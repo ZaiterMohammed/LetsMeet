@@ -2,14 +2,8 @@
 {
 	using System;
 
-	public class Organisation
-	{
-		public Guid OrganisationId
-		{ 
-			get;
-			set;
-		}
-
+	public class UpdateOrganisationRequest
+    {
 		public string OrganisationName
         {
 			get;
@@ -24,18 +18,6 @@
 
 		public OrganisationCategory OrganisationCategory
         {
-			get;
-			set;
-		}
-
-		public DateTime CreatedDate
-		{
-			get;
-			set;
-		}
-
-		public DateTime ModifiedDate
-		{
 			get;
 			set;
 		}

@@ -2,15 +2,23 @@
 {
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using Microsoft.Extensions.Configuration;
     using System;
     using System.Data;
     using System.Data.SqlClient;
 
     public class PostStore : IPostStore
     {
+
+        private readonly IConfiguration Configuration;
+
+        public PostStore(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public string AddLike(PostAction postAction)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_CreateLike";
@@ -34,7 +42,7 @@
         }
         public string DeleteLike(Guid postId, Guid userId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_DeleteLike";

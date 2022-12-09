@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Abstractions", "Le
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Store", "LetsMeet.Store\LetsMeet.Store.csproj", "{DBF4F0D7-D6BC-46BE-A46E-1C523AB69EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Business", "LetsMeet.Business\LetsMeet.Business.csproj", "{BE5E7A06-B7AA-4537-8051-715956AE2B08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Business", "LetsMeet.Business\LetsMeet.Business.csproj", "{BE5E7A06-B7AA-4537-8051-715956AE2B08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Testing", "LetsMeet.Testing\LetsMeet.Testing.csproj", "{C02D1B0A-06B6-4D7D-A504-484B8D26672F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE5E7A06-B7AA-4537-8051-715956AE2B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C02D1B0A-06B6-4D7D-A504-484B8D26672F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02D1B0A-06B6-4D7D-A504-484B8D26672F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02D1B0A-06B6-4D7D-A504-484B8D26672F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02D1B0A-06B6-4D7D-A504-484B8D26672F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

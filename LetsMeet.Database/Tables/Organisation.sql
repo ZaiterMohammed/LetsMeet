@@ -5,5 +5,6 @@
     [OrganisationType] NVARCHAR(50) NULL, 
     [OrganisationCategory] NVARCHAR(50) NULL, 
     [CreatedDate] DATE NULL, 
-    [ModifiedDate] DATE NULL
+    [ModifiedDate] DATE NULL, 
+    [IsFeatured] INT NULL
 )

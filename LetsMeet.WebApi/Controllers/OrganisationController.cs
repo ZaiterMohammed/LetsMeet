@@ -2,6 +2,7 @@
 {
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
+    using LetsMeet.Business;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -17,14 +18,14 @@
         [Route("api/organization")]
         public IActionResult AddOrganisation([FromBody] CreateOrganisationRequest organisationRequest)
         {
-            return Ok(organisationManager.AddOrganisation(organisationRequest));
+            return Ok(organisationManager.AddOrganisation(organisationRequest, 1));
         }
 
         [HttpPut]
         [Route("api/organization")]
-        public IActionResult UpdateOrganisation([FromBody] CreateOrganisationRequest organisationRequest)
+        public IActionResult UpdateOrganisation([FromBody] UpdateOrganisationRequest updateOrganisationRequest)
         {
-            return Ok(organisationManager.UpdateOrganisation(organisationRequest));
+            return Ok(organisationManager.UpdateOrganisation(updateOrganisationRequest));
         }
 
         [HttpDelete]
@@ -77,5 +78,25 @@
             return Ok(organisationManager.DeletePost(postId, companyId));
         }
 
+        [HttpGet]
+        [Route("api/organization/allOrganisation")]
+        public IActionResult GetAllOrganisation()
+        {
+            return Ok(organisationManager.GetAllOrganisation());
+        }
+
+        [HttpGet]
+        [Route("api/organization/allOrganisationNotVerified")]
+        public IActionResult GetAllOrganisationNotVerified()
+        {
+            return Ok(organisationManager.GetAllOrganisationNotVerified());
+        }
+
+        [HttpGet]
+        [Route("api/organization/allOrganisationVerified")]
+        public IActionResult GetAllOrganisationVerified()
+        {
+            return Ok(organisationManager.GetAllOrganisationVerified());
+        }
     }
 }

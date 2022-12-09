@@ -17,6 +17,8 @@ builder.Services.AddScoped<IPostStore, PostStore>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserStore, UserStore>();
 
+builder.Services.AddScoped<IMunicipalityManager, MunicipalityManager>();
+builder.Services.AddScoped<IMunicipalityStore, MunicipalityStore>();
 // Add services to the container.
 
 builder.Services.AddControllers();

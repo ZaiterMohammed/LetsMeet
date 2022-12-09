@@ -3,11 +3,11 @@
  @OrganisationType nvarchar(50),  
  @OrganisationCategory uniqueidentifier,
  @CreatedDate date,
- @ModifiedDate date
-
+ @ModifiedDate date,
+ @IsFeatured int
 AS
  BEGIN 
- Insert into Organisation(OrganisationId,OrganisationName,OrganisationType,OrganisationCategory,CreatedDate,ModifiedDate)  
- values(newId(),@OrganisationName,@OrganisationType,@OrganisationCategory,@CreatedDate,@ModifiedDate)  
+ Insert into Organisation(OrganisationId,OrganisationName,OrganisationType,OrganisationCategory,CreatedDate,ModifiedDate,IsFeatured)  
+ values(newId(),@OrganisationName,@OrganisationType,@OrganisationCategory,@CreatedDate,@ModifiedDate,@IsFeatured)  
  END
       

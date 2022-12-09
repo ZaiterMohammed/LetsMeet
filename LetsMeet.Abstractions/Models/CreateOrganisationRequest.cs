@@ -21,5 +21,11 @@
 			get;
 			set;
 		}
-	}
+
+        public int IsFeatured
+        {
+            get;
+            set;
+        }
+    }
 }

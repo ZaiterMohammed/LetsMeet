@@ -2,16 +2,25 @@
 {
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using Microsoft.Extensions.Configuration;
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
 
     public class OrganisationStore : IOrganisationStore
     {
 
-        public string AddOrganisation(CreateOrganisationRequest organisationRequest)
+        private readonly IConfiguration Configuration;
+
+        public OrganisationStore(IConfiguration configuration)
         {
-            using SqlConnection con = new SqlConnection();
+            Configuration = configuration;
+        }
+
+        public string AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_CreateOrganisation";
@@ -22,6 +31,8 @@
                 cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
                 cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@IsFeatured", IsFeatured);
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -36,18 +47,20 @@
                 return (ex.Message.ToString());
             }
         }
-        public string UpdateOrganisation(CreateOrganisationRequest organisationRequest)
+        public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_UpdateOrganisation";
                using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationName", organisationRequest.OrganisationName);
-                cmd.Parameters.AddWithValue("@OrganisationTypes", organisationRequest.OrganisationTypes);
-                cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
+                cmd.Parameters.AddWithValue("@OrganisationName", updateOrganisationRequest.OrganisationName);
+                cmd.Parameters.AddWithValue("@OrganisationTypes", updateOrganisationRequest.OrganisationTypes);
+                cmd.Parameters.AddWithValue("@OrganisationCategory", updateOrganisationRequest.OrganisationCategory);
                 cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@IsFeatured", updateOrganisationRequest.IsFeatured);
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -64,7 +77,7 @@
         }
         public string DeleteOrganisation(Guid organisationId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_DeleteOrganisation";
@@ -88,7 +101,7 @@
 
         public string CreateRole(Guid id, Guid userId, string roleName)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_CreateRole";
@@ -115,7 +128,7 @@
 
         public string AcceptRole(Guid id, Guid userId, string roleName)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_UpdateRole";
@@ -142,7 +155,7 @@
 
         public string DeleteRole(Guid roleId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_DeleteRole";
@@ -166,7 +179,7 @@
 
         public Role GetRoleByUserId(Guid userId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
 
             string sql = "usp_GetRoleByUserId";
             using SqlCommand cmd = new SqlCommand(sql, con);
@@ -190,7 +203,7 @@
 
         public string AddPost(CreatePostRequest createPostRequest)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_CreatePost";
@@ -219,7 +232,7 @@
         }
         public string UpdatePost(CreatePostRequest createPostRequest)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_UpdatePost";
@@ -248,7 +261,7 @@
 
         public string DeletePost(Guid postId, Guid companyId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_DeletePost";
@@ -272,7 +285,7 @@
 
         public Post GetPostById(Guid postId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
 
             string sql = "usp_GetPostById";
             using SqlCommand cmd = new SqlCommand(sql, con);
@@ -297,6 +310,124 @@
             return post;
         }
 
+
+        public List<Organisation> GetAllOrganisation()
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
+            string sql = "usp_GetAllOrganisation";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            var organisations = new List<Organisation>();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    organisations.Add(new Organisation()
+                    {
+                        OrganisationId = reader.GetGuid("OrganisationId"),
+                        OrganisationName = reader.GetString("OrganisationName"),
+                        OrganisationTypes = Enum.Parse<OrganisationTypes>(reader.GetString("OrganisationTypes")),
+                        OrganisationCategory = Enum.Parse<OrganisationCategory>(reader.GetString("OrganisationCategory")),
+                        CreatedDate = reader.GetDateTime("CreatedDate"),
+                        ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                        IsFeatured = reader.GetInt32("IsFeatured"),
+                        
+                    });
+                }
+            }
+            return organisations;
+        }
+
+
+        public List<Organisation> GetAllOrganisationNotVerified()
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
+            string sql = "usp_GetAllOrganisationNotVerified";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            var organisations = new List<Organisation>();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    organisations.Add(new Organisation()
+                    {
+                        OrganisationId = reader.GetGuid("OrganisationId"),
+                        OrganisationName = reader.GetString("OrganisationName"),
+                        OrganisationTypes = Enum.Parse<OrganisationTypes>(reader.GetString("OrganisationTypes")),
+                        OrganisationCategory = Enum.Parse<OrganisationCategory>(reader.GetString("OrganisationCategory")),
+                        CreatedDate = reader.GetDateTime("CreatedDate"),
+                        ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                        IsFeatured = reader.GetInt32("IsFeatured"),
+
+                    });
+                }
+            }
+            return organisations;
+        }
+
+        public List<Organisation> GetAllOrganisationVerified()
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
+            string sql = "usp_GetAllOrganisationVerified";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            var organisations = new List<Organisation>();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    organisations.Add(new Organisation()
+                    {
+                        OrganisationId = reader.GetGuid("OrganisationId"),
+                        OrganisationName = reader.GetString("OrganisationName"),
+                        OrganisationTypes = Enum.Parse<OrganisationTypes>(reader.GetString("OrganisationTypes")),
+                        OrganisationCategory = Enum.Parse<OrganisationCategory>(reader.GetString("OrganisationCategory")),
+                        CreatedDate = reader.GetDateTime("CreatedDate"),
+                        ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                        IsFeatured = reader.GetInt32("IsFeatured"),
+
+                    });
+                }
+            }
+            return organisations;
+
+        }
+        public List<Admins> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
+            string sql = "GetAllAdminsByMunicipalityId";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@MunicipalityId", MunicipalityId);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+
+            var Admins = new List<Admins>();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Admins.Add(new Admins()
+                    {
+                        AdminId = reader.GetGuid("AdminId"),
+                        UserId = reader.GetGuid("UserId"),
+                        MunicipalityId = reader.GetGuid("MunicipalityId"),
+                    });
+                }
+            }
+            return Admins;
+        }
 
     }
 }

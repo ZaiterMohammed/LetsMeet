@@ -2,11 +2,12 @@
 {
     using LetsMeet.Abstractions.Models;
     using System;
+    using System.Collections.Generic;
 
     public interface IOrganisationStore
     {
-        public string AddOrganisation(CreateOrganisationRequest organisationRequest);
-        public string UpdateOrganisation(CreateOrganisationRequest organisationRequest);
+        public string AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured);
+        public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest);
         public string DeleteOrganisation(Guid organisationId);
         public string CreateRole(Guid id, Guid userId, string roleName);
         public string AcceptRole(Guid id, Guid userId, string roleName);
@@ -16,6 +17,9 @@
         public string UpdatePost(CreatePostRequest createPostRequest);
         public string DeletePost(Guid postId, Guid companyId);
         public Post GetPostById(Guid postId);
+        public List<Organisation> GetAllOrganisation();
+        public List<Organisation> GetAllOrganisationNotVerified();
+        public List<Organisation> GetAllOrganisationVerified();
 
     }
 }

@@ -9,6 +9,8 @@
     [CountryId] UNIQUEIDENTIFIER NULL, 
     [CreatedDate] DATE NULL, 
     [ModifiedDate] DATE NULL, 
+    [OrganisationId] UNIQUEIDENTIFIER NULL, 
     CONSTRAINT [FK_Users_ToCountry] FOREIGN KEY ([CountryId]) REFERENCES [Country]([CountryId]), 
     CONSTRAINT [FK_Users_ToCity] FOREIGN KEY ([CityId]) REFERENCES [City]([CityId]), 
+    CONSTRAINT [FK_Users_ToOrganisation] FOREIGN KEY ([OrganisationId]) REFERENCES [Organisation]([OrganisationId]) 
 )
