@@ -16,6 +16,8 @@
 
         public string AddLike(PostAction postAction)
         {
+            //null check
+            //posts exists or not
             return postStore.AddLike(postAction);
         }
         public string DeleteLike(Guid postId, Guid userId)

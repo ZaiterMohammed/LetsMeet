@@ -5,6 +5,7 @@
 
     public interface ICompanyStore
     {
+        // add companyId
         public string AddCompany(CreateCompanyRequest createCompanyRequest);
         public string UpdateCompany(CreateCompanyRequest createCompanyRequest);
         public string DeleteCompany(Guid companyId);
