@@ -19,6 +19,9 @@ builder.Services.AddScoped<IUserStore, UserStore>();
 
 builder.Services.AddScoped<IMunicipalityManager, MunicipalityManager>();
 builder.Services.AddScoped<IMunicipalityStore, MunicipalityStore>();
+
+builder.Services.AddScoped<IOfferManager, OfferManager>();
+builder.Services.AddScoped<IOfferStore, OfferStore>();
 // Add services to the container.
 
 builder.Services.AddControllers();

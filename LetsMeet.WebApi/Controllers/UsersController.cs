@@ -8,7 +8,6 @@
     public class UsersController : ControllerBase
     {
         private readonly IUserManager userManager;
-
         public UsersController(IUserManager userManager)
         {
             this.userManager = userManager;

@@ -2,7 +2,6 @@
 {
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
-    using LetsMeet.Business;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]

@@ -39,5 +39,17 @@
             get;
             set;
         }
+
+        public Guid OwnerId
+        {
+            get;
+            set;
+        }
+
+        public Guid MunicipalityId
+        {
+            get;
+            set;
+        }
     }
 }

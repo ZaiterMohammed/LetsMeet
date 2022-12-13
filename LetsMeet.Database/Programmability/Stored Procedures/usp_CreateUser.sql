@@ -6,11 +6,13 @@
  @CityId uniqueidentifier,
  @CountryId uniqueidentifier,
  @CreatedDate date,
- @ModifiedDate date
+ @ModifiedDate date,
+ @OwnerId uniqueidentifier,
+ @MunicipalityId uniqueidentifier
 
 AS
  BEGIN 
- Insert into Users (UserId,FirstName,LastName,Age,IsFeatured,CityId,CountryId,CreatedDate,ModifiedDate)  
- values(newId(),@FirstName,@LastName,@Age,@IsFeatured,@CityId,@CountryId,@CreatedDate,@ModifiedDate)  
+ Insert into Users (UserId,FirstName,LastName,Age,IsFeatured,CityId,CountryId,CreatedDate,ModifiedDate,OwnerId,MunicipalityId)  
+ values(newId(),@FirstName,@LastName,@Age,@IsFeatured,@CityId,@CountryId,@CreatedDate,@ModifiedDate,@OwnerId,@MunicipalityId)  
  END
       

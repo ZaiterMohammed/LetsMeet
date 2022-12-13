@@ -14,8 +14,28 @@
             this.userStore = userStore;
         }
 
+
         public string AddUser(CreateRequestUser createRequestUser)
         {
+            /*
+             var users = GetUsersByOwnerId(createRequestUser.OwnerId); //select * from User where OrganisationId = organisationRequest.OrganisationId and IsFeatured = 1
+
+            if(createRequestUser.OwnerId == "Organisation")
+            {
+                if (users.Count > 10)
+                {
+                    return organisationStore.UpdateOrganisationIsFeatured(createRequestUser.OwnerId, 1);
+                }
+            }
+
+            if (createRequestUser.OwnerId == "Company")
+            {
+                if (users.Count > 10)
+                {
+                    return CompanyStore.UpdateCompanyIsFeatured(createRequestUser.OwnerId,1);
+                }
+            }
+            */
             return userStore.AddUser(createRequestUser);
         }
 

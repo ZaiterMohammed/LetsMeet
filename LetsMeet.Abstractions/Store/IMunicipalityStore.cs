@@ -3,7 +3,6 @@
     using LetsMeet.Abstractions.Models;
     using System;
     using System.Collections.Generic;
-
     public interface IMunicipalityStore
     {
         public string AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest);

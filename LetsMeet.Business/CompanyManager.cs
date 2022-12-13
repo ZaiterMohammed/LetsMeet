@@ -8,12 +8,10 @@
     public class CompanyManager : ICompanyManager
     {
         private readonly ICompanyStore companyStore;
-
         public CompanyManager(ICompanyStore companyStore)
         {
             this.companyStore = companyStore;
         }
-
 
         public string AddCompany(CreateCompanyRequest createCompanyRequest)
         {

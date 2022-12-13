@@ -9,7 +9,6 @@
     public class OrganisationManager : IOrganisationManager
     {
         private readonly IOrganisationStore organisationStore;
-
         public OrganisationManager(IOrganisationStore organisationStore)
         {
             this.organisationStore = organisationStore;
@@ -23,7 +22,6 @@
            // {
             //    return organisationStore.AddOrganisation(organisationRequest, IsFeatured);
            // }
-
             return organisationStore.AddOrganisation(organisationRequest, 0);
         }
         public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)

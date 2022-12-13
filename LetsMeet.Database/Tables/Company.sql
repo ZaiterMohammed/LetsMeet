@@ -8,6 +8,7 @@
     [CreatedDate] DATE NULL, 
     [ModifiedDate] DATE NULL,
 
+    [IsFeatured] INT NULL, 
     CONSTRAINT [FK_Park_ToCity] FOREIGN KEY ([CityId]) REFERENCES [City]([CityId]), 
     CONSTRAINT [FK_Park_ToCountry] FOREIGN KEY ([CountryId]) REFERENCES [Country]([CountryId])
 )

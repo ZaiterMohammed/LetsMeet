@@ -2,15 +2,22 @@
 {
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using Microsoft.Extensions.Configuration;
     using System;
     using System.Data;
     using System.Data.SqlClient;
 
     public class UserStore : IUserStore
     {
+        private readonly IConfiguration Configuration;
+
+        public UserStore(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public string AddUser(CreateRequestUser createRequestUser)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_CreateUser";
@@ -24,6 +31,8 @@
                  cmd.Parameters.AddWithValue("@City", createRequestUser.CityId);
                 cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@OwnerId", createRequestUser.OwnerId);
+                cmd.Parameters.AddWithValue("@MunicipalityId", createRequestUser.MunicipalityId);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -41,7 +50,7 @@
 
         public string UpdateUser(CreateRequestUser createRequestUser)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_UpdateUser";
@@ -54,6 +63,8 @@
                 cmd.Parameters.AddWithValue("@Country", createRequestUser.CountryId);
                 cmd.Parameters.AddWithValue("@City", createRequestUser.CityId);
                 cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@OwnerId", createRequestUser.OwnerId);
+                cmd.Parameters.AddWithValue("@MunicipalityId", createRequestUser.MunicipalityId);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -71,7 +82,7 @@
 
         public string DeleteUser(Guid userId)
         {
-            using SqlConnection con = new SqlConnection();
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             try
             {
                 string sql = "usp_DeleteUser";

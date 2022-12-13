@@ -4,11 +4,9 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
-
     public class PostManager : IPostManager
     {
         private readonly IPostStore postStore;
-
         public PostManager(IPostStore postStore)
         {
             this.postStore = postStore;

@@ -46,7 +46,6 @@
                     throw new Exception("you can no add an admin because you are not admin");
                 }
             }
-
             return municipalityStore.AddAdmin(createAdminRequest);
         }
         public string DeleteAdmin(Guid AdminId, Guid UserId ,Guid MunicipalityId)
@@ -60,7 +59,6 @@
                     throw new Exception("you can no add an admin because you are not admin");
                 }
             }
-
             return municipalityStore.DeleteAdmin(AdminId, UserId, MunicipalityId);
         }
         public List<Admins> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
