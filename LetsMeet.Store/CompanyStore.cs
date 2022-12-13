@@ -5,6 +5,7 @@
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Threading.Tasks;
 
     public class CompanyStore : ICompanyStore
     {
@@ -38,11 +39,9 @@
             }
         }
 
-        public string UpdateCompany(CreateCompanyRequest createCompanyRequest)
+        public async Task<String>  UpdateCompany(CreateCompanyRequest createCompanyRequest)
         {
             using SqlConnection con = new SqlConnection();
-            try
-            {
                 string sql = "usp_UpdateCompany";
                 using SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -51,19 +50,10 @@
                 cmd.Parameters.AddWithValue("@CountryName", createCompanyRequest.CountryId);
                 cmd.Parameters.AddWithValue("@CityName", createCompanyRequest.CityId);
                 cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                con.Open();
-                cmd.ExecuteNonQuery();
+                await con.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
                 con.Close();
                 return ("Company was Successfully Updated");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
         }
 
         public string DeleteCompany(Guid companyId)

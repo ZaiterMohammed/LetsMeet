@@ -10,24 +10,41 @@
         private readonly ICompanyStore companyStore;
         public CompanyManager(ICompanyStore companyStore)
         {
+            if(companyStore == null)
+            {
+                throw new ArgumentNullException(nameof(companyStore));
+            }
+
             this.companyStore = companyStore;
         }
 
         public string AddCompany(CreateCompanyRequest createCompanyRequest)
         {
+            if(createCompanyRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createCompanyRequest));
+            }
+
             return companyStore.AddCompany(createCompanyRequest);
         }
 
         public string UpdateCompany(CreateCompanyRequest createCompanyRequest)
         {
+            if (createCompanyRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createCompanyRequest));
+            }
+
             return companyStore.UpdateCompany(createCompanyRequest);
         }
         public string DeleteCompany(Guid companyId)
         {
+            // get company by id to test 
             return companyStore.DeleteCompany(companyId);
         }
         public string CreateRole(Guid id, Guid userId, string roleName)
         {
+            // check if company exists
             var RoleByUserId = GetRoleByUserId(userId);
 
             if (RoleByUserId == null)
