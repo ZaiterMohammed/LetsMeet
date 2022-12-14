@@ -3,12 +3,13 @@
     using LetsMeet.Abstractions.Models;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IOfferManager
     {
-        public string AddOffer(CreateOfferRequest createOfferRequest);
-        public string UpdateOffer(CreateOfferRequest createOfferRequest);
-        public string DeleteOffer(Guid offerId);
-        public List<Offer> GetAllOfferByCreatedBy(Guid CreatedBy);
+        public Task<String> AddOffer(CreateOfferRequest createOfferRequest);
+        public Task<String> UpdateOffer(CreateOfferRequest createOfferRequest);
+        public Task<String> DeleteOffer(Guid offerId);
+        public Task<List<Offer>> GetAllOfferByCreatedBy(Guid CreatedBy);
     }
 }

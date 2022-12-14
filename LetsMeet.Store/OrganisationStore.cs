@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Threading.Tasks;
 
     public class OrganisationStore : IOrganisationStore
     {
@@ -18,166 +19,100 @@
             Configuration = configuration;
         }
 
-        public string AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
+        public async Task<String> AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_CreateOrganisation";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationName", organisationRequest.OrganisationName);
-                cmd.Parameters.AddWithValue("@OrganisationTypes", organisationRequest.OrganisationTypes);
-                cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
-                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@IsFeatured", IsFeatured);
+            string sql = "usp_CreateOrganisation";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OrganisationName", organisationRequest.OrganisationName);
+            cmd.Parameters.AddWithValue("@OrganisationTypes", organisationRequest.OrganisationTypes);
+            cmd.Parameters.AddWithValue("@OrganisationCategory", organisationRequest.OrganisationCategory);
+            cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@IsFeatured", IsFeatured);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Organisation save Successfully");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Organisation save Successfully");
         }
-        public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
+        public async Task<String> UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_UpdateOrganisation";
-               using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationName", updateOrganisationRequest.OrganisationName);
-                cmd.Parameters.AddWithValue("@OrganisationTypes", updateOrganisationRequest.OrganisationTypes);
-                cmd.Parameters.AddWithValue("@OrganisationCategory", updateOrganisationRequest.OrganisationCategory);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@IsFeatured", updateOrganisationRequest.IsFeatured);
+            string sql = "usp_UpdateOrganisation";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OrganisationName", updateOrganisationRequest.OrganisationName);
+            cmd.Parameters.AddWithValue("@OrganisationTypes", updateOrganisationRequest.OrganisationTypes);
+            cmd.Parameters.AddWithValue("@OrganisationCategory", updateOrganisationRequest.OrganisationCategory);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@IsFeatured", updateOrganisationRequest.IsFeatured);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Organization was Successfully Updated");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Organization was Successfully Updated");
         }
-        public string DeleteOrganisation(Guid organisationId)
+        public async Task<String> DeleteOrganisation(Guid organisationId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_DeleteOrganisation";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OrganisationId", organisationId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("OrganizationId was Successfully Deleted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_DeleteOrganisation";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OrganisationId", organisationId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("OrganizationId was Successfully Deleted");
         }
 
-        public string CreateRole(Guid id, Guid userId, string roleName)
+        public async Task<String> CreateRole(Guid id, Guid userId, string roleName)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_CreateRole";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@RoleName", roleName);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@OwnerId", id);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Role save Successfully");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_CreateRole";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@RoleName", roleName);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@OwnerId", id);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Role save Successfully");
         }
 
 
-        public string AcceptRole(Guid id, Guid userId, string roleName)
+        public async Task<String> AcceptRole(Guid id, Guid userId, string roleName)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_UpdateRole";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@IsVerified", 1);
-                cmd.Parameters.AddWithValue("@RoleName", roleName);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@OwnerId", id);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Role was Successfully Accepted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_UpdateRole";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@IsVerified", 1);
+            cmd.Parameters.AddWithValue("@RoleName", roleName);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            cmd.Parameters.AddWithValue("@OwnerId", id);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Role was Successfully Accepted");
         }
 
-        public string DeleteRole(Guid roleId)
+        public async Task<String> DeleteRole(Guid roleId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_DeleteRole";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@RoleId", roleId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Role was Successfully Deleted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_DeleteRole";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@RoleId", roleId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Role was Successfully Deleted");
         }
 
-        public Role GetRoleByUserId(Guid userId)
+        public async Task<Role> GetRoleByUserId(Guid userId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
 
@@ -185,9 +120,9 @@
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@UserId", userId);
-            con.Open();
+            await con.OpenAsync();
             var role = new Role();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
                 role = new Role()
                 {
@@ -201,89 +136,56 @@
 
 
 
-        public string AddPost(CreatePostRequest createPostRequest)
+        public async Task<String> AddPost(CreatePostRequest createPostRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_CreatePost";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
-                cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
-                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
-                cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
-                cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Post save Successfully");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_CreatePost";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
+            cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
+            cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
+            cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
+            cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Post save Successfully");
         }
-        public string UpdatePost(CreatePostRequest createPostRequest)
+        public async Task<String> UpdatePost(CreatePostRequest createPostRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_UpdatePost";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
-                cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
-                cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
-                cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Post was Successfully Updated");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_UpdatePost";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostTitle", createPostRequest.PostTitle);
+            cmd.Parameters.AddWithValue("@PostDescription", createPostRequest.PostDescription);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@CreatedBy", createPostRequest.CreatedBy);
+            cmd.Parameters.AddWithValue("@UpdatedBy", createPostRequest.UpdatedBy);
+            cmd.Parameters.AddWithValue("@OwnerTypes", createPostRequest.OwnerTypes);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Post was Successfully Updated");
         }
 
-        public string DeletePost(Guid postId, Guid companyId)
+        public async Task<String> DeletePost(Guid postId, Guid companyId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_DeletePost";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostId", postId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Post was Successfully Deleted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_DeletePost";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostId", postId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Post was Successfully Deleted");
         }
 
-        public Post GetPostById(Guid postId)
+        public async Task<Post> GetPostById(Guid postId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
 
@@ -291,9 +193,9 @@
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@PostId", postId);
-            con.Open();
+            await con.OpenAsync();
             var post = new Post();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
                 post = new Post()
                 {
@@ -311,19 +213,19 @@
         }
 
 
-        public List<Organisation> GetAllOrganisation()
+        public async Task<List<Organisation>> GetAllOrganisation()
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "usp_GetAllOrganisation";
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            cmd.ExecuteNonQuery();
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
 
             var organisations = new List<Organisation>();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     organisations.Add(new Organisation()
                     {
@@ -334,7 +236,7 @@
                         CreatedDate = reader.GetDateTime("CreatedDate"),
                         ModifiedDate = reader.GetDateTime("ModifiedDate"),
                         IsFeatured = reader.GetInt32("IsFeatured"),
-                        
+
                     });
                 }
             }
@@ -342,17 +244,17 @@
         }
 
 
-        public List<Organisation> GetAllOrganisationNotVerified()
+        public async Task<List<Organisation>> GetAllOrganisationNotVerified()
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "usp_GetAllOrganisationNotVerified";
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            cmd.ExecuteNonQuery();
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
 
             var organisations = new List<Organisation>();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
                 while (reader.Read())
                 {
@@ -372,14 +274,14 @@
             return organisations;
         }
 
-        public List<Organisation> GetAllOrganisationVerified()
+        public async Task<List<Organisation>> GetAllOrganisationVerified()
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "usp_GetAllOrganisationVerified";
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            cmd.ExecuteNonQuery();
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
 
             var organisations = new List<Organisation>();
             using (SqlDataReader reader = cmd.ExecuteReader())
@@ -402,7 +304,7 @@
             return organisations;
 
         }
-        public List<Admins> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
+        public async Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "GetAllAdminsByMunicipalityId";
@@ -410,13 +312,13 @@
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@MunicipalityId", MunicipalityId);
 
-            con.Open();
-            cmd.ExecuteNonQuery();
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
 
             var Admins = new List<Admins>();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     Admins.Add(new Admins()
                     {
@@ -429,5 +331,31 @@
             return Admins;
         }
 
+        public async Task<Organisation> GetOrganisattionById(Guid organisationId)
+        {
+            using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
+
+            string sql = "usp_GetOrganisattionById";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@organisationId", organisationId);
+            await con.OpenAsync();
+            var organisation = new Organisation();
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+            {
+                organisation = new Organisation()
+                {
+                    OrganisationId = reader.GetGuid("OrganisationId"),
+                    OrganisationName = reader.GetString("OrganisationName"),
+                    OrganisationTypes = Enum.Parse<OrganisationTypes>(reader.GetString("OrganisationTypes")),
+                    OrganisationCategory = Enum.Parse<OrganisationCategory>(reader.GetString("OrganisationCategory")),
+                    CreatedDate = reader.GetDateTime("CreatedDate"),
+                    ModifiedDate = reader.GetDateTime("ModifiedDate"),
+                    IsFeatured = reader.GetInt32("IsFeatured"),
+                };
+            }
+            return organisation;
+           
+        }
     }
 }

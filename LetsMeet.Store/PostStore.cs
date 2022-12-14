@@ -6,6 +6,7 @@
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Threading.Tasks;
 
     public class PostStore : IPostStore
     {
@@ -16,53 +17,31 @@
         {
             Configuration = configuration;
         }
-        public string AddLike(PostAction postAction)
+        public async Task<String> AddLike(PostAction postAction)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_CreateLike";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostId", postAction.PostId);
-                cmd.Parameters.AddWithValue("@UserId", postAction.UserId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Like save Successfully");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_CreateLike";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostId", postAction.PostId);
+            cmd.Parameters.AddWithValue("@UserId", postAction.UserId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.OpenAsync();
+            return ("Like save Successfully");
         }
-        public string DeleteLike(Guid postId, Guid userId)
+        public async Task<String> DeleteLike(Guid postId, Guid userId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_DeleteLike";
-               using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PostId", postId);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Like was Successfully Deleted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_DeleteLike";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@PostId", postId);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.OpenAsync();
+            return ("Like was Successfully Deleted");
         }
     }
 }

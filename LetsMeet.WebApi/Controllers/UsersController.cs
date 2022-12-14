@@ -15,23 +15,23 @@
 
         [HttpPost]
         [Route("api/users")]
-        public IActionResult AddUser([FromBody] CreateRequestUser createRequestUser)
+        public async Task<IActionResult> AddUser([FromBody] CreateRequestUser createRequestUser)
         {
-            return Ok(userManager.AddUser(createRequestUser));
+            return Ok(await userManager.AddUser(createRequestUser));
         }
 
         [HttpPut]
         [Route("api/users")]
-        public IActionResult UpdateUser([FromBody] CreateRequestUser createRequestUser)
+        public async Task<IActionResult> UpdateUser([FromBody] CreateRequestUser createRequestUser)
         {
-            return Ok(userManager.UpdateUser(createRequestUser));
+            return Ok(await userManager.UpdateUser(createRequestUser));
         }
 
         [HttpDelete]
         [Route("api/users/{id}")]
-        public IActionResult DeleteUser([FromRoute] Guid userId)
+        public async Task<IActionResult> DeleteUser([FromRoute] Guid userId)
         {
-            return Ok(userManager.DeleteUser(userId));
+            return Ok(await userManager.DeleteUser(userId));
         }
     }
 }

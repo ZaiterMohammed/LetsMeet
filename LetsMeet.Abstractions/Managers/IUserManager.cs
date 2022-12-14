@@ -2,11 +2,12 @@
 {
     using LetsMeet.Abstractions.Models;
     using System;
+    using System.Threading.Tasks;
 
     public interface IUserManager
     {
-        public string AddUser(CreateRequestUser createRequestUser);
-        public string UpdateUser(CreateRequestUser createRequestUser);
-        public string DeleteUser(Guid userId);
+        public Task<String> AddUser(CreateRequestUser createRequestUser);
+        public Task<String> UpdateUser(CreateRequestUser createRequestUser);
+        public Task<String> DeleteUser(Guid userId);
     }
 }

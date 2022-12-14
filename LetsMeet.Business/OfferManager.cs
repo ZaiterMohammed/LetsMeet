@@ -5,6 +5,7 @@
     using LetsMeet.Abstractions.Store;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class OfferManager : IOfferManager
     {
@@ -15,21 +16,21 @@
             this.offerStore = offerStore;
         }
 
-        public string AddOffer(CreateOfferRequest createOfferRequest)
+        public async Task<String> AddOffer(CreateOfferRequest createOfferRequest)
         {
-            return offerStore.AddOffer(createOfferRequest);
+            return await offerStore.AddOffer(createOfferRequest);
         }
-        public string UpdateOffer(CreateOfferRequest createOfferRequest)
+        public async Task<String> UpdateOffer(CreateOfferRequest createOfferRequest)
         {
-            return offerStore.UpdateOffer(createOfferRequest);
+            return await offerStore.UpdateOffer(createOfferRequest);
         }
-        public string DeleteOffer(Guid offerId)
+        public async Task<String> DeleteOffer(Guid offerId)
         {
-            return offerStore.DeleteOffer(offerId);
+            return await offerStore.DeleteOffer(offerId);
         }
-        public List<Offer> GetAllOfferByCreatedBy(Guid CreatedBy)
+        public async Task<List<Offer>> GetAllOfferByCreatedBy(Guid CreatedBy)
         {
-            return offerStore.GetAllOfferByCreatedBy(CreatedBy);
+            return await offerStore.GetAllOfferByCreatedBy(CreatedBy);
         }
     }
 }

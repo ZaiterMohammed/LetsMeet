@@ -4,23 +4,50 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
+    using System.Threading.Tasks;
+
     public class PostManager : IPostManager
     {
         private readonly IPostStore postStore;
-        public PostManager(IPostStore postStore)
+        private readonly IOrganisationStore organisationStore;
+        public PostManager(IPostStore postStore , IOrganisationStore organisationStore)
         {
+            if (postStore == null)
+            {
+                throw new ArgumentNullException(nameof(postStore));
+            }
+            if (organisationStore == null)
+            {
+                throw new ArgumentNullException(nameof(organisationStore));
+            }
+
             this.postStore = postStore;
+            this.organisationStore = organisationStore;
         }
 
-        public string AddLike(PostAction postAction)
+        public async Task<String> AddLike(PostAction postAction)
         {
-            //null check
-            //posts exists or not
-            return postStore.AddLike(postAction);
+            if (postAction == null)
+            {
+                throw new ArgumentNullException(nameof(postAction));
+            }
+            var post = organisationStore.GetPostById(postAction.PostId);
+            if (post == null)
+            {
+                throw new ArgumentNullException(nameof(post));
+            }
+
+            return await postStore.AddLike(postAction);
         }
-        public string DeleteLike(Guid postId, Guid userId)
+        public async Task<String> DeleteLike(Guid postId, Guid userId)
         {
-            return postStore.DeleteLike(postId, userId);
+            var post = organisationStore.GetPostById(postId);
+            if (post == null)
+            {
+                throw new ArgumentNullException(nameof(post));
+            }
+            
+            return await postStore.DeleteLike(postId, userId);
         }
     }
 }

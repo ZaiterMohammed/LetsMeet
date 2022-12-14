@@ -2,8 +2,23 @@ using LetsMeet.Abstractions.Managers;
 using LetsMeet.Abstractions.Store;
 using LetsMeet.Business;
 using LetsMeet.Store;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using LetsMeet.WebApi.Data;
+using LetsMeet.WebApi.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("LetsMeetWebApiContextConnection") ?? throw new InvalidOperationException("Connection string 'LetsMeetWebApiContextConnection' not found.");
+
+builder.Services.AddDbContext<LetsMeetWebApiContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<LetsMeetWebApiUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<LetsMeetWebApiContext>();
 
 builder.Services.AddScoped<ICompanyManager, CompanyManager>();
 builder.Services.AddScoped<ICompanyStore, CompanyStore>();
@@ -22,6 +37,68 @@ builder.Services.AddScoped<IMunicipalityStore, MunicipalityStore>();
 
 builder.Services.AddScoped<IOfferManager, OfferManager>();
 builder.Services.AddScoped<IOfferStore, OfferStore>();
+
+//var Key = Encoding.ASCII.GetBytes("MY_BIG_SECRET_KEY_LKSHDJFLSDKJFW@#($)(#)34234");
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = context =>
+        {
+            //todo
+            var userMachine = context.HttpContext.RequestServices.GetRequiredService<UserManager<LetsMeetWebApiUser>>();
+            var user = userMachine.GetUserAsync(context.HttpContext.User);
+            if (user == null)
+            {
+                context.Fail("UnAuthorized");
+            }
+            return Task.CompletedTask;
+        }
+    };
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("MY_BIG_SECRET_KEY_LKSHDJFLSDKJFW@#($)(#)34234")),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+});
+
+
+builder.Services.AddSwaggerGen(setup =>
+{
+    // Include 'SecurityScheme' to use JWT Authentication
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        BearerFormat = "JWT",
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { jwtSecurityScheme, Array.Empty<string>() }
+    });
+
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -40,6 +117,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

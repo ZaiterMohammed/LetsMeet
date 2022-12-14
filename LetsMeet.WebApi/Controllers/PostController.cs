@@ -15,16 +15,16 @@
 
         [HttpPost]
         [Route("api/post/like")]
-        public IActionResult AddLike([FromBody] PostAction postAction)
+        public async Task<IActionResult> AddLike([FromBody] PostAction postAction)
         {
-            return Ok(postManager.AddLike(postAction));
+            return Ok(await postManager.AddLike(postAction));
         }
 
         [HttpDelete]
         [Route("api/post/like/{postId}/{userId}")]
-        public IActionResult DeleteLike([FromRoute] Guid postId, [FromRoute] Guid userId)
+        public async Task<IActionResult> DeleteLike([FromRoute] Guid postId, [FromRoute] Guid userId)
         {
-            return Ok(postManager.DeleteLike(postId, userId));
+            return Ok(await postManager.DeleteLike(postId, userId));
         }
     }
 }

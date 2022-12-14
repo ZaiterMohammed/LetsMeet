@@ -4,6 +4,7 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
+    using System.Threading.Tasks;
 
     public class UserManager : IUserManager
     {
@@ -15,7 +16,7 @@
         }
 
 
-        public string AddUser(CreateRequestUser createRequestUser)
+        public async Task<String> AddUser(CreateRequestUser createRequestUser)
         {
             /*
              var users = GetUsersByOwnerId(createRequestUser.OwnerId); //select * from User where OrganisationId = organisationRequest.OrganisationId and IsFeatured = 1
@@ -36,17 +37,17 @@
                 }
             }
             */
-            return userStore.AddUser(createRequestUser);
+            return await userStore.AddUser(createRequestUser);
         }
 
-        public string UpdateUser(CreateRequestUser createRequestUser)
+        public async Task<String> UpdateUser(CreateRequestUser createRequestUser)
         {
-            return userStore.UpdateUser(createRequestUser);
+            return await userStore.UpdateUser(createRequestUser);
         }
 
-        public string DeleteUser(Guid Id)
+        public async Task<String> DeleteUser(Guid Id)
         {
-            return userStore.DeleteUser(Id);
+            return await userStore.DeleteUser(Id);
         }
     }
 }

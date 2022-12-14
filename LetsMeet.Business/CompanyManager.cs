@@ -4,6 +4,7 @@
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using System;
+    using System.Threading.Tasks;
 
     public class CompanyManager : ICompanyManager
     {
@@ -18,31 +19,31 @@
             this.companyStore = companyStore;
         }
 
-        public string AddCompany(CreateCompanyRequest createCompanyRequest)
+        public async Task<String> AddCompany(CreateCompanyRequest createCompanyRequest)
         {
             if(createCompanyRequest == null)
             {
                 throw new ArgumentNullException(nameof(createCompanyRequest));
             }
 
-            return companyStore.AddCompany(createCompanyRequest);
+            return await companyStore.AddCompany(createCompanyRequest);
         }
 
-        public string UpdateCompany(CreateCompanyRequest createCompanyRequest)
+        public async Task<String> UpdateCompany(CreateCompanyRequest createCompanyRequest)
         {
             if (createCompanyRequest == null)
             {
                 throw new ArgumentNullException(nameof(createCompanyRequest));
             }
 
-            return companyStore.UpdateCompany(createCompanyRequest);
+            return await companyStore.UpdateCompany(createCompanyRequest);
         }
-        public string DeleteCompany(Guid companyId)
+        public async Task<String> DeleteCompany(Guid companyId)
         {
             // get company by id to test 
-            return companyStore.DeleteCompany(companyId);
+            return await companyStore.DeleteCompany(companyId);
         }
-        public string CreateRole(Guid id, Guid userId, string roleName)
+        public async Task<String> CreateRole(Guid id, Guid userId, string roleName)
         {
             // check if company exists
             var RoleByUserId = GetRoleByUserId(userId);
@@ -51,53 +52,53 @@
             {
                 throw new ArgumentNullException("role Cannot be bull");
             }
-            return companyStore.CreateRole(id, userId, roleName);
+            return await companyStore.CreateRole(id, userId, roleName);
         }
 
-        public string AcceptRole(Guid id, Guid userId, string roleName)
+        public async Task<String> AcceptRole(Guid id, Guid userId, string roleName)
         {
-            return companyStore.AcceptRole(id, userId, roleName);
+            return await companyStore.AcceptRole(id, userId, roleName);
         }
 
-        public string DeleteRole(Guid roleId)
+        public async Task<String> DeleteRole(Guid roleId)
         {
-            return companyStore.DeleteRole(roleId);
+            return await companyStore.DeleteRole(roleId);
         }
 
-        public Role GetRoleByUserId(Guid userId)
+        public async Task<Role> GetRoleByUserId(Guid userId)
         {
-            return companyStore.GetRoleByUserId(userId);
+            return await companyStore.GetRoleByUserId(userId);
         }
 
 
-        public string AddPost(CreatePostRequest createPostRequest)
+        public async Task<String> AddPost(CreatePostRequest createPostRequest)
         {
-            return companyStore.AddPost(createPostRequest);
+            return await companyStore.AddPost(createPostRequest);
         }
-        public string UpdatePost(CreatePostRequest createPostRequest)
+        public async Task<String> UpdatePost(CreatePostRequest createPostRequest)
         {
-            return companyStore.UpdatePost(createPostRequest);
+            return await companyStore.UpdatePost(createPostRequest);
         }
-        public string DeletePost(Guid postId, Guid companyId)
+        public async Task<String> DeletePost(Guid postId, Guid companyId)
         {
             // null validation
 
-            var post = this.GetPostById(postId);
+            var post = await this.GetPostById(postId);
             if (post == null)
             {
                 throw new NullReferenceException("The specified post cannot be undefined or null.");
             }
 
-            if (companyId != GetPostById(postId).CreatedBy)
+            if (companyId != post.CreatedBy)
             {
                 return "cannet delete this post";
             }
-            return companyStore.DeletePost(postId, companyId);
+            return await companyStore.DeletePost(postId, companyId);
         }
 
-        public Post GetPostById(Guid postId)
+        public async Task<Post> GetPostById(Guid postId)
         {
-            return companyStore.GetPostById(postId);
+            return await companyStore.GetPostById(postId);
         }
 
     }

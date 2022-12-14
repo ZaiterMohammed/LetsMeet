@@ -1,5 +1,4 @@
-﻿
-namespace LetsMeet.Testing
+﻿namespace LetsMeet.Testing
 {
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
@@ -15,21 +14,20 @@ namespace LetsMeet.Testing
             Assert.Throws<ArgumentNullException>(() => new CompanyManager(null));
         }
 
-        [Fact]
-        public void ManagerShouldCallStoreCreateCompany()
+     [Fact]
+        public async Task ManagerShouldCallStoreCreateCompany()
         {
             var mockStore = new Mock<ICompanyStore>();
 
             var companyRequest = new CreateCompanyRequest();
-            mockStore.Setup(x => x.AddCompany(companyRequest)).Returns("Company save Successfully");
+            mockStore.Setup(x => x.AddCompany(companyRequest)).ReturnsAsync("Company save Successfully");
 
             var manager = new CompanyManager(mockStore.Object);
 
-            var result = manager.AddCompany(companyRequest);
+            var result = await manager.AddCompany(companyRequest);
             Assert.Equal("Company save Successfully", result);
 
             mockStore.Verify(e => e.AddCompany(companyRequest));
-
         }
     }
 }

@@ -5,101 +5,188 @@
     using LetsMeet.Abstractions.Store;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class OrganisationManager : IOrganisationManager
     {
         private readonly IOrganisationStore organisationStore;
         public OrganisationManager(IOrganisationStore organisationStore)
         {
+            if (organisationStore == null)
+            {
+                throw new ArgumentNullException(nameof(organisationStore));
+            }
             this.organisationStore = organisationStore;
         }
-        public string AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
+        public async Task<String> AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
         {
+            if (organisationRequest == null)
+            {
+                throw new ArgumentNullException(nameof(organisationRequest));
+            }
+            if (IsFeatured == 0)
+            {
+                throw new ArgumentNullException(nameof(IsFeatured));
+            }
             //and i can put it in the UserStore when i create a user to each organisation
-           // var users = GetUsersByMunicipalityId(organisationRequest.OrganisationId); //select * from User where OrganisationId = organisationRequest.OrganisationId and IsFeatured = 1
+            // var users = GetUsersByMunicipalityId(organisationRequest.OrganisationId); //select * from User where OrganisationId = organisationRequest.OrganisationId and IsFeatured = 1
 
-           // if (users.Count > 10)
-           // {
+            // if (users.Count > 10)
+            // {
             //    return organisationStore.AddOrganisation(organisationRequest, IsFeatured);
-           // }
-            return organisationStore.AddOrganisation(organisationRequest, 0);
+            // }
+            return await organisationStore.AddOrganisation(organisationRequest, 0);
         }
-        public string UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
+        public async Task<string> UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
         {
-            return organisationStore.UpdateOrganisation(updateOrganisationRequest);
+            if (updateOrganisationRequest == null)
+            {
+                throw new ArgumentNullException(nameof(updateOrganisationRequest));
+            }
+            return await organisationStore.UpdateOrganisation(updateOrganisationRequest);
         }
-        public string DeleteOrganisation(Guid organisationId)
+        public async Task<string> DeleteOrganisation(Guid organisationId)
         {
-            return organisationStore.DeleteOrganisation(organisationId);
+            var organization = await organisationStore.GetOrganisattionById(organisationId);
+
+            if (organization == null)
+            {
+                throw new ArgumentNullException(nameof(organization));
+            }
+            return await organisationStore.DeleteOrganisation(organisationId);
         }
-        public string CreateRole(Guid id, Guid userId, string roleName)
+        public async Task<string> CreateRole(Guid id, Guid userId, string roleName)
         {
-            var RoleByUserId = GetRoleByUserId(userId);
+
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (roleName == null)
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            var RoleByUserId =await GetRoleByUserId(userId);
 
             if (RoleByUserId == null)
             {
                 throw new ArgumentNullException("role Cannot be bull");
             }
 
-            return organisationStore.CreateRole(id, userId, roleName);
+            return await organisationStore.CreateRole(id, userId, roleName);
         }
-        public string AcceptRole(Guid id, Guid userId, string roleName)
+        public async Task<string> AcceptRole(Guid id, Guid userId, string roleName)
         {
-            return organisationStore.AcceptRole(id, userId, roleName);
+
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (roleName == null)
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            return await organisationStore.AcceptRole(id, userId, roleName);
         }
-        public string DeleteRole(Guid roleId)
+        public async Task<string> DeleteRole(Guid roleId)
         {
-            return organisationStore.DeleteRole(roleId);
+
+            if (roleId == null)
+            {
+                throw new ArgumentNullException(nameof(roleId));
+            }
+            return await organisationStore.DeleteRole(roleId);
         }
-        public Role GetRoleByUserId(Guid userId)
+        public async Task<Role> GetRoleByUserId(Guid userId)
         {
-            return organisationStore.GetRoleByUserId(userId);
+            if (userId == null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            return await organisationStore.GetRoleByUserId(userId);
         }
 
-        public string AddPost(CreatePostRequest createPostRequest)
+        public async Task<string> AddPost(CreatePostRequest createPostRequest)
         {
-            return organisationStore.AddPost(createPostRequest);
+            if (createPostRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createPostRequest));
+            }
+            return await organisationStore.AddPost(createPostRequest);
         }
-        public string UpdatePost(CreatePostRequest createPostRequest)
+        public async Task<string> UpdatePost(CreatePostRequest createPostRequest)
         {
-            return organisationStore.UpdatePost(createPostRequest);
+            if (createPostRequest == null)
+            {
+                throw new ArgumentNullException(nameof(createPostRequest));
+            }
+            return await organisationStore.UpdatePost(createPostRequest);
         }
-        public string DeletePost(Guid postId, Guid companyId)
+        public async Task<string> DeletePost(Guid postId, Guid companyId)
         {
-            // null validation
+            if (postId == null)
+            {
+                throw new ArgumentNullException(nameof(postId));
+            }
+            if (companyId == null)
+            {
+                throw new ArgumentNullException(nameof(companyId));
+            }
 
-            var post = this.GetPostById(postId);
+
+            var post = await this.GetPostById(postId);
             if (post == null)
             {
                 throw new NullReferenceException("The specified post cannot be undefined or null.");
             }
 
-            if (companyId != GetPostById(postId).CreatedBy)
+            if (companyId != post.CreatedBy)
             {
                 return "cannet delete this post";
             }
-            return organisationStore.DeletePost(postId, companyId);
+            return await organisationStore.DeletePost(postId, companyId);
         }
 
-        public Post GetPostById(Guid postId)
+        public async Task<Post> GetPostById(Guid postId)
         {
-            return organisationStore.GetPostById(postId);
+            if (postId == null)
+            {
+                throw new ArgumentNullException(nameof(postId));
+            }
+            return await organisationStore.GetPostById(postId);
         }
 
-        public List<Organisation> GetAllOrganisation()
+        public async Task<List<Organisation>> GetAllOrganisation()
         {
-            return organisationStore.GetAllOrganisation();
+            return await organisationStore.GetAllOrganisation();
         }
 
-        public List<Organisation> GetAllOrganisationNotVerified()
+        public async Task<List<Organisation>> GetAllOrganisationNotVerified()
         {
-            return organisationStore.GetAllOrganisationNotVerified();
+            return await organisationStore.GetAllOrganisationNotVerified();
         }
-        public List<Organisation> GetAllOrganisationVerified()
+        public async Task<List<Organisation>> GetAllOrganisationVerified()
         {
-            return organisationStore.GetAllOrganisationVerified();
-
+            return await organisationStore.GetAllOrganisationVerified();
         }
 
+        public async Task<Organisation> GetOrganisattionById(Guid organisationId)
+        {
+            if (organisationId == null)
+            {
+                throw new ArgumentNullException(nameof(organisationId));
+            }
+            return await organisationStore.GetOrganisattionById(organisationId);
+        }
     }
 }

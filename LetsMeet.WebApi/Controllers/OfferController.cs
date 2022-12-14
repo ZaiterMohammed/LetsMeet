@@ -16,23 +16,23 @@
 
         [HttpPost]
         [Route("api/offer")]
-        public IActionResult AddOffer([FromBody] CreateOfferRequest createOfferRequest)
+        public async Task<IActionResult> AddOffer([FromBody] CreateOfferRequest createOfferRequest)
         {
-            return Ok(offerManager.AddOffer(createOfferRequest));
+            return Ok(await offerManager.AddOffer(createOfferRequest));
         }
 
         [HttpPut]
         [Route("api/offer")]
-        public IActionResult UpdateOffer([FromBody] CreateOfferRequest createOfferRequest)
+        public async Task<IActionResult> UpdateOffer([FromBody] CreateOfferRequest createOfferRequest)
         {
-            return Ok(offerManager.UpdateOffer(createOfferRequest));
+            return Ok(await offerManager.UpdateOffer(createOfferRequest));
         }
 
         [HttpDelete]
         [Route("api/offer/{offerId}")]
-        public IActionResult DeleteOffer([FromRoute] Guid offerId)
+        public async Task<IActionResult> DeleteOffer([FromRoute] Guid offerId)
         {
-            return Ok(offerManager.DeleteOffer(offerId));
+            return Ok(await offerManager.DeleteOffer(offerId));
         }
     }
 }

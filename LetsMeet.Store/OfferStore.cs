@@ -7,6 +7,7 @@
     using System.Data.SqlClient;
     using System.Data;
     using Microsoft.Extensions.Configuration;
+    using System.Threading.Tasks;
 
     public class OfferStore : IOfferStore
     {
@@ -16,97 +17,64 @@
         {
             Configuration = configuration;
         }
-        public string AddOffer(CreateOfferRequest createOfferRequest)
+        public async Task<String> AddOffer(CreateOfferRequest createOfferRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_CreateOffer";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OfferTitle", createOfferRequest.OfferTitle);
-                cmd.Parameters.AddWithValue("@OfferTypes", createOfferRequest.OfferTypes);
-                cmd.Parameters.AddWithValue("@CreatedBy", createOfferRequest.UserId);
-                cmd.Parameters.AddWithValue("@ModifiedBy", createOfferRequest.UserId);
-                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Offer save Successfully");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_CreateOffer";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OfferTitle", createOfferRequest.OfferTitle);
+            cmd.Parameters.AddWithValue("@OfferTypes", createOfferRequest.OfferTypes);
+            cmd.Parameters.AddWithValue("@CreatedBy", createOfferRequest.UserId);
+            cmd.Parameters.AddWithValue("@ModifiedBy", createOfferRequest.UserId);
+            cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Offer save Successfully");
         }
-        public string UpdateOffer(CreateOfferRequest createOfferRequest)
+        public async Task<String> UpdateOffer(CreateOfferRequest createOfferRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_UpdateOffer";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@OfferTitle", createOfferRequest.OfferTitle);
-                cmd.Parameters.AddWithValue("@OfferTypes", createOfferRequest.OfferTypes);
-                cmd.Parameters.AddWithValue("@ModifiedBy", createOfferRequest.UserId);
-                cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Municipality was Successfully Updated");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_UpdateOffer";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OfferTitle", createOfferRequest.OfferTitle);
+            cmd.Parameters.AddWithValue("@OfferTypes", createOfferRequest.OfferTypes);
+            cmd.Parameters.AddWithValue("@ModifiedBy", createOfferRequest.UserId);
+            cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Municipality was Successfully Updated");
         }
-        public string DeleteOffer(Guid offerId)
+        public async Task<String> DeleteOffer(Guid offerId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            try
-            {
-                string sql = "usp_DeleteOffer";
-                using SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@offerId", offerId);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return ("Offer was Successfully Deleted");
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-                return (ex.Message.ToString());
-            }
+            string sql = "usp_DeleteOffer";
+            using SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@offerId", offerId);
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+            await con.CloseAsync();
+            return ("Offer was Successfully Deleted");
         }
-        public List<Offer> GetAllOfferByCreatedBy(Guid CreatedBy)
+        public async Task<List<Offer>> GetAllOfferByCreatedBy(Guid CreatedBy)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "usp_GetAllOfferByCreatedBy";
             using SqlCommand cmd = new SqlCommand(sql, con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
-            con.Open();
-            cmd.ExecuteNonQuery();
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
 
             var offers = new List<Offer>();
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     offers.Add(new Offer()
                     {
