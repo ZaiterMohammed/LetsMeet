@@ -31,20 +31,48 @@
             _signInManager = signInManager;
         }
 
-        [HttpGet("getFruits")]
         [AllowAnonymous]
-        public IActionResult GetFruits()
+        [HttpPost("register")]
+        public async Task<ActionResult> Register([FromBody] MyLoginModelType myLoginModelType)
         {
-            List<string> fruits = new List<string>() { "apples", "bannanas" };
-            return Ok(fruits);
+            LetsMeetWebApiUser AuthenAuthorUser = new LetsMeetWebApiUser()
+            {
+                Email = myLoginModelType.Email,
+                UserName = myLoginModelType.Email,
+                EmailConfirmed = false
+            };
+
+            var result = await _userManager.CreateAsync(AuthenAuthorUser, myLoginModelType.Password);
+
+            if (result.Succeeded)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var Key = Encoding.ASCII.GetBytes("MY_BIG_SECRET_KEY_LKSHDJFLSDKJFW@#($)(#)34234");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, myLoginModelType.Email)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    // SigningCridentials = new SigningCridentials(new SymmetricSecurityKey(key), new SymmetricAlgorithm());
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+                return Ok(new { Token = tokenString, Result = "Register Success" });
+            }
+            else
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var error in result.Errors)
+                {
+                    stringBuilder.Append(error.Description);
+                }
+                return Ok(new { Result = $"Register Fail:{stringBuilder.ToString()}" });
+            }
         }
 
-        [HttpGet("getFruitsAuthenticated")]
-        public IActionResult GetFruitsAuthenticated()
-        {
-            List<string> fruits = new List<string>() { "organic apples", "organic bannanas" };
-            return Ok(fruits);
-        }
+
 
         [AllowAnonymous]
         [HttpPost("Login")]
@@ -77,49 +105,6 @@
                 }
             }
             return Ok("Failed, Try again");
-        }
-
-
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] MyLoginModelType myLoginModelType)
-        {
-            LetsMeetWebApiUser AuthenAuthorUser = new LetsMeetWebApiUser()
-            {
-                Email = myLoginModelType.Email,
-                UserName = myLoginModelType.Email,
-                EmailConfirmed = false
-            };
-
-            var result = await _userManager.CreateAsync(AuthenAuthorUser, myLoginModelType.Password);
-
-            if (result.Succeeded)
-            {
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var Key = Encoding.ASCII.GetBytes("MY_BIG_SECRET_KEY_LKSHDJFLSDKJFW@#($)(#)34234");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, myLoginModelType.Email)
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    // SigningCridentials = new SigningCridentials(new SymmetricSecurityKey(key), new SymmetricAlgorithm());
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
-                return Ok(new { Token = tokenString , Result = "Register Success"  });
-            }
-            else
-            {
-                StringBuilder stringBuilder = new StringBuilder();
-                foreach (var error in result.Errors)
-                {
-                    stringBuilder.Append(error.Description);
-                }
-                return Ok(new { Result = $"Register Fail:{stringBuilder.ToString()}" });
-            }
         }
 
 

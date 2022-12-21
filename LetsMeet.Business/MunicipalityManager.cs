@@ -76,15 +76,15 @@
         }
         public async Task<string> DeleteAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId)
         {
-            if (AdminId == null)
+            if (AdminId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(AdminId));
             }
-            if (UserId == null)
+            if (UserId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(UserId));
             }
-            if (MunicipalityId == null)
+            if (MunicipalityId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(MunicipalityId));
             }
@@ -102,7 +102,7 @@
         }
         public async Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
         {
-            if (MunicipalityId == null)
+            if (MunicipalityId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(MunicipalityId));
             }
@@ -112,7 +112,7 @@
 
         public async Task<Municipality> GetMunicipalityById(Guid MunicipalityId)
         {
-            if (MunicipalityId == null)
+            if (MunicipalityId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(MunicipalityId));
             }

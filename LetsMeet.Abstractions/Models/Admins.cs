@@ -4,6 +4,8 @@
 
     public class Admins
     {
+        //[Range(0,1000)]
+       // [Required]
         public Guid AdminId
         {
             get;

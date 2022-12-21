@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,7 +24,7 @@ namespace LetsMeet.Testing
         public async Task AddMunicipalityShouldShouldThrowExceptionIfCreateMunicipalityRequestIsNull()
         {
             var mockStore = new Mock<IMunicipalityStore>();
-           
+
             var createMunicipalityRequest = new CreateMunicipalityRequest();
 
             var manager = new MunicipalityManager(mockStore.Object);
@@ -80,16 +81,180 @@ namespace LetsMeet.Testing
         {
             var mockStore = new Mock<IMunicipalityStore>();
 
-            var createAdminRequest = new CreateAdminRequest();
+            var createAdminRequest = new CreateAdminRequest() { MunicipalityId = Guid.NewGuid(), UserId = Guid.NewGuid() };
+
             List<Admins> admins = new List<Admins>();
+
             mockStore.Setup(x => x.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId)).ReturnsAsync(admins);
 
             var manager = new MunicipalityManager(mockStore.Object);
 
             var result = await manager.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId);
-            Assert.False(result.Count == 0);
+            Assert.True(result.Count == 0);
+        }
+
+        [Fact]
+        public async Task AddAdminShouldThrowExceptionIfCreateAdminRequestUserIdDifferentAdminUserId()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var createAdminRequest = new CreateAdminRequest() { MunicipalityId = Guid.NewGuid(), UserId = Guid.NewGuid() };
+
+            List<Admins> admins = new List<Admins>();
+            admins.Add(new Admins() { AdminId = Guid.NewGuid(), UserId = Guid.NewGuid() });
+
+            mockStore.Setup(x => x.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId)).ReturnsAsync(admins);
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            var result = await manager.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId);
+
+            Assert.True(admins.Count > 0);
+            foreach (var admin in admins)
+            {
+                Assert.True(admin.UserId != createAdminRequest.UserId);
+            }
+        }
+
+
+        [Fact]
+        public async Task ManagerShouldCallStoreAddAdmin()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var createAdminRequest = new CreateAdminRequest(Guid.NewGuid(), Guid.NewGuid());
+
+            mockStore.Setup(x => x.AddAdmin(createAdminRequest)).ReturnsAsync("Admin save Successfully");
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+
+            var result = await manager.AddAdmin(createAdminRequest);
+            Assert.Equal("Admin save Successfully", result);
+
 
             mockStore.Verify(e => e.AddAdmin(createAdminRequest));
         }
+
+
+        [Fact]
+        public async Task DeleteAdminShouldThrowExceptionIfDeleteAdminRequestAdminIdNull()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.DeleteAdmin(Guid.Empty, Guid.NewGuid(), Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task DeleteAdminShouldThrowExceptionIfDeleteAdminRequestUserIdIdNull()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.DeleteAdmin(Guid.NewGuid(), Guid.Empty, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task DeleteAdminShouldThrowExceptionIfDeleteAdminRequestMunicipalityIdIdNull()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.DeleteAdmin(Guid.NewGuid(), Guid.NewGuid(), Guid.Empty));
+        }
+
+
+        [Fact]
+        public async Task DeleteAdminShouldThrowExceptionIfAdminUserIdDifferentUserId()
+        {
+            var userId = Guid.NewGuid();
+            var mockStore = new Mock<IMunicipalityStore>();
+            var createAdminRequest = new CreateAdminRequest(Guid.NewGuid(), Guid.NewGuid());
+
+            mockStore.Setup(x => x.AddAdmin(createAdminRequest)).ReturnsAsync("Admin save Successfully");
+
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await manager.AddAdmin(createAdminRequest));
+
+            var admins = await manager.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId);
+
+            //Assert.True(admins[0].UserId == userId);
+        }
+
+
+        [Fact]
+        public async Task GetAllAdminsByMunicipalityIdShouldThrowExceptionIfMunicipalityIdIsEmpty()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.GetAllAdminsByMunicipalityId(Guid.Empty));
+        }
+
+
+
+        [Fact]
+        public async Task GetAllAdminsByMunicipalityIdShouldCallStoreGetAllAdminsByMunicipalityId()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+            var admins = new List<Admins>();
+            admins.Add(new Admins()
+            {
+                AdminId = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                MunicipalityId = Guid.NewGuid(),
+            });
+            mockStore.Setup(x => x.GetAllAdminsByMunicipalityId(Guid.NewGuid())).ReturnsAsync(admins);
+
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            var result = await manager.GetAllAdminsByMunicipalityId(admins[0].MunicipalityId);
+            Assert.NotEqual(admins, result);
+
+            mockStore.Verify(e => e.GetAllAdminsByMunicipalityId(admins[0].MunicipalityId));
+        }
+
+
+        [Fact]
+        public async Task GetMunicipalityByIdShouldThrowExceptionIfMunicipalityIdIsEmpty()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.GetMunicipalityById(Guid.Empty));
+        }
+
+        [Fact]
+        public async Task GetMunicipalityByIdShouldCallStoreGetMunicipalityById()
+        {
+            var mockStore = new Mock<IMunicipalityStore>();
+            var municipality =
+            new Municipality()
+            {
+                MunicipalityId = Guid.NewGuid(),
+                MunicipalityName = "Akkar",
+                CountryId = Guid.NewGuid(),
+            };
+
+            mockStore.Setup(x => x.GetMunicipalityById(municipality.MunicipalityId)).ReturnsAsync(municipality);
+
+
+            var manager = new MunicipalityManager(mockStore.Object);
+
+            var result = await manager.GetMunicipalityById(municipality.MunicipalityId);
+            Assert.Equal(municipality, result);
+
+            mockStore.Verify(e => e.GetMunicipalityById(municipality.MunicipalityId));
+        }
+
     }
 }

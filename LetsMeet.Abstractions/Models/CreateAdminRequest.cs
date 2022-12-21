@@ -15,5 +15,14 @@
             get;
             set;
         }
+        public CreateAdminRequest()
+        {
+
+        }
+        public CreateAdminRequest(Guid userId, Guid municipalityId)
+        {
+            UserId = userId;
+            MunicipalityId = municipalityId;
+        }
     }
 }
