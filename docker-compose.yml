@@ -19,4 +19,3 @@ services:
     container_name: rabbitmq
     hostname: "my-rabbitmq-server"
     image: rabbitmq:3-management
-

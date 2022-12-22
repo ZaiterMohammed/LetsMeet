@@ -9,7 +9,7 @@
 
 AS
  BEGIN 
- Insert into Post (PostId,PostTitle,CreatedDate,ModifiedDate,PostDescription,OwnerId,CreatedBy,UpdatedBy)
+ Insert into Post (PostId,PostTitle,CreatedDate,ModifiedDate,PostDescription,OwnerIdF,CreatedByF,UpdatedByF)
  values(newId(),@PostTitle,@CreatedDate,@ModifiedDate,@PostDescription,@OwnerId,@CreatedBy,@UpdatedBy)  
 END
       

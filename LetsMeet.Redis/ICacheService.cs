@@ -1,5 +1,7 @@
 ﻿
-namespace LetsMeet.WebApi.Redis
+using System;
+
+namespace LetsMeet.Redis
 {
     public interface ICacheService
     {

@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using StackExchange.Redis;
-
-namespace LetsMeet.WebApi.Redis
+﻿namespace LetsMeet.Redis
 {
+    using Newtonsoft.Json;
+    using StackExchange.Redis;
+    using System;
+
     public class CacheService : ICacheService
     {
         private IDatabase _db;

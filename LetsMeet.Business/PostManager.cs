@@ -3,6 +3,8 @@
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using LetsMeet.Redis;
+    using LetsMeet.WebApi;
     using System;
     using System.Threading.Tasks;
 
@@ -10,7 +12,9 @@
     {
         private readonly IPostStore postStore;
         private readonly IOrganisationStore organisationStore;
-        public PostManager(IPostStore postStore , IOrganisationStore organisationStore)
+        private readonly ICacheService _cacheService;
+
+        public PostManager(IPostStore postStore, IOrganisationStore organisationStore, ICacheService cacheService)
         {
             if (postStore == null)
             {
@@ -20,10 +24,15 @@
             {
                 throw new ArgumentNullException(nameof(organisationStore));
             }
-
+            if (cacheService == null)
+            {
+                throw new ArgumentNullException(nameof(cacheService));
+            }
             this.postStore = postStore;
             this.organisationStore = organisationStore;
+            _cacheService = cacheService;
         }
+
 
         public async Task<String> AddLike(PostAction postAction)
         {
@@ -36,8 +45,10 @@
             {
                 throw new ArgumentNullException(nameof(post));
             }
+            var obj = await postStore.AddLike(postAction);
+            _cacheService.RemoveData("postaction");
 
-            return await postStore.AddLike(postAction);
+            return obj;
         }
         public async Task<String> DeleteLike(Guid postId, Guid userId)
         {
@@ -46,7 +57,8 @@
             {
                 throw new ArgumentNullException(nameof(post));
             }
-            
+            var filteredData = await postStore.DeleteLike(postId, userId);
+            _cacheService.RemoveData("postaction");
             return await postStore.DeleteLike(postId, userId);
         }
     }

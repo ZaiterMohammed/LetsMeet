@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>e59fd7f0-d2a0-4ac9-92ee-b3a625c7d088</ProjectGuid>
+    <ProjectGuid>60b3d617-6d5b-4443-9cad-51bf593dcefb</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>letsmeet.webapi</DockerServiceName>

@@ -3,6 +3,9 @@
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using LetsMeet.Redis;
+    using LetsMeet.WebApi;
+    using LetsMeet.WebApi.RabbitMQ;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -10,14 +13,26 @@
     public class MunicipalityManager : IMunicipalityManager
     {
         private readonly IMunicipalityStore municipalityStore;
+        private readonly ICacheService _cacheService;
+        private readonly IRabitMQProducer _rabitMQProducer;
 
-        public MunicipalityManager(IMunicipalityStore municipalityStore)
+        public MunicipalityManager(IMunicipalityStore municipalityStore, ICacheService cacheService, IRabitMQProducer rabitMQProducer)
         {
             if (municipalityStore == null)
             {
                 throw new ArgumentNullException(nameof(municipalityStore));
             }
+            if (cacheService == null)
+            {
+                throw new ArgumentNullException(nameof(cacheService));
+            }
+            if (rabitMQProducer == null)
+            {
+                throw new ArgumentNullException(nameof(rabitMQProducer));
+            }
             this.municipalityStore = municipalityStore;
+            _cacheService = cacheService;
+            _rabitMQProducer = rabitMQProducer;
         }
 
         public async Task<String> AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
@@ -26,8 +41,13 @@
             {
                 throw new ArgumentNullException(nameof(createMunicipalityRequest));
             }
+            var obj = await municipalityStore.AddMunicipality(createMunicipalityRequest);
+             _cacheService.RemoveData("municipality");
 
-            return await municipalityStore.AddMunicipality(createMunicipalityRequest);
+            //send the inserted product data to the queue and consumer will listening this data from queue
+            _rabitMQProducer.SendProductMessage(obj);
+          
+            return obj;
         }
         public async Task<string> UpdateMunicipality(Municipality municipality)
         {
@@ -35,8 +55,10 @@
             {
                 throw new ArgumentNullException(nameof(municipality));
             }
+            var responce = await municipalityStore.UpdateMunicipality(municipality);
+             _cacheService.RemoveData("municipality");
 
-            return await municipalityStore.UpdateMunicipality(municipality);
+            return responce;
         }
         public async Task<string> DeleteMunicipality(Guid municipalityId)
         {
@@ -45,13 +67,47 @@
             {
                 throw new ArgumentNullException(nameof(municipality));
             }
+            var filteredData = await municipalityStore.DeleteMunicipality(municipalityId);
+            //_cacheService.RemoveData("municipality");
 
-            return await municipalityStore.DeleteMunicipality(municipalityId);
+            return filteredData;
         }
-        public async Task<List<Municipality>> GetAllMunicipality()
+        public async Task<IEnumerable<Municipality>> GetAllMunicipality()
         {
-            return await municipalityStore.GetAllMunicipality();
+
+            var cacheData = _cacheService.GetData<IEnumerable<Municipality>>("municipality");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+            cacheData = await municipalityStore.GetAllMunicipality();
+            _cacheService.SetData<IEnumerable<Municipality>>("municipality", cacheData, expirationTime);
+
+
+            return cacheData;
         }
+
+
+        public async Task<Municipality> GetMunicipalityById(Guid MunicipalityId)
+        {
+            if (MunicipalityId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(MunicipalityId));
+            }
+
+
+            Municipality filteredData;
+            var cacheData = _cacheService.GetData<IEnumerable<Municipality>>("municipality");
+            if (cacheData == null)
+            {
+                throw new ArgumentNullException(nameof(cacheData));
+            }
+            filteredData = await municipalityStore.GetMunicipalityById(MunicipalityId);
+            return filteredData;
+        }
+
+
         public async Task<string> AddAdmin(CreateAdminRequest createAdminRequest)
         {
             if (createAdminRequest == null)
@@ -110,14 +166,5 @@
             return await municipalityStore.GetAllAdminsByMunicipalityId(MunicipalityId);
         }
 
-        public async Task<Municipality> GetMunicipalityById(Guid MunicipalityId)
-        {
-            if (MunicipalityId == Guid.Empty)
-            {
-                throw new ArgumentNullException(nameof(MunicipalityId));
-            }
-
-            return await municipalityStore.GetMunicipalityById(MunicipalityId);
-        }
     }
 }

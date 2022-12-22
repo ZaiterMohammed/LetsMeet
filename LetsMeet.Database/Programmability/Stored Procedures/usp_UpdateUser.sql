@@ -13,7 +13,7 @@ AS
  BEGIN 
 
  update Users
- set FirstName = @FirstName, LastName = @LastName , Age = @Age  , IsFeatured = @IsFeatured  , ModifiedDate = @ModifiedDate , OwnerId = @OwnerId , MunicipalityId = @MunicipalityId
+ set FirstName = @FirstName, LastName = @LastName , Age = @Age  , IsFeatured = @IsFeatured  , ModifiedDate = @ModifiedDate , OwnerIdF = @OwnerId , MunicipalityIdF = @MunicipalityId
  where UserId = @UserId
 
  END

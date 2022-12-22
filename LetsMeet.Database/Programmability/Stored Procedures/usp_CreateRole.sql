@@ -6,6 +6,6 @@
 	@OwnerId uniqueidentifier
 AS
 BEGIN
-	insert into Role (RoleId,RoleName,IsVerified,UserId,OwnerId)
+	insert into Role (RoleId,RoleName,IsVerified,UserIdF,OwnerIdF)
 	values(newId(),@Name,@IsVerified,@UserId,@OwnerId)
 END

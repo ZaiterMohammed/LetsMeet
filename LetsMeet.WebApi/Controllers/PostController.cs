@@ -2,7 +2,7 @@
 {
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
-    using LetsMeet.WebApi.Redis;
+    using LetsMeet.WebApi;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json.Linq;
 
@@ -10,12 +10,8 @@
     public class PostController : Controller
     {
         private readonly IPostManager postManager;
-        private readonly DbContextClass _dbContext;
-        private readonly ICacheService _cacheService;
-        public PostController(DbContextClass dbContext, ICacheService cacheService,IPostManager postManager)
+        public PostController(IPostManager postManager)
         {
-            _dbContext = dbContext;
-            _cacheService = cacheService;
             this.postManager = postManager;
         }
 
@@ -24,12 +20,7 @@
         [Route("api/post/like")]
         public async Task<IActionResult> AddLike([FromBody] PostAction postAction)
         {
-            var obj = await _dbContext.PostAction.AddAsync(postAction);
-            _cacheService.RemoveData("post");
-            _dbContext.SaveChanges();
-            return Ok(obj.Entity);
-
-           // return Ok(await postManager.AddLike(postAction));
+           return Ok(await postManager.AddLike(postAction));
         }
 
         [HttpDelete]

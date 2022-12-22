@@ -3,6 +3,6 @@
 	@CountryId uniqueidentifier
 AS
 BEGIN
-	INSERT INTO Municipality(MunicipalityId,MunicipalityName,CountryId)
+	INSERT INTO Municipality(MunicipalityId,MunicipalityName,CountryIdF)
 	VALUES( newId(), @MunicipalityName,@CountryId)
 END

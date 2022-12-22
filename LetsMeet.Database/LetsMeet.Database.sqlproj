@@ -102,6 +102,9 @@
     <Build Include="Programmability\Stored Procedures\usp_GetAllOrganisationNotVerified.sql" />
     <Build Include="Programmability\Stored Procedures\usp_GetAllOrganisationVerified.sql" />
     <Build Include="Programmability\Stored Procedures\usp_GetAllAdminsByMunicipalityId.sql" />
+    <Build Include="Programmability\Stored Procedures\usp_GetMunicipalityById.sql" />
+    <Build Include="Tables\Notification.sql" />
+    <Build Include="Programmability\Stored Procedures\ups_CreateNotification.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="LetsMeet.Database.refactorlog" />

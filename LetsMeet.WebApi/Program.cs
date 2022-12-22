@@ -1,6 +1,5 @@
 using LetsMeet.Abstractions.Managers;
 using LetsMeet.Abstractions.Store;
-using LetsMeet.Business;
 using LetsMeet.Store;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +9,14 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using LetsMeet.WebApi.Data;
 using LetsMeet.WebApi.Areas.Identity.Data;
-using LetsMeet.WebApi.Redis;
+using LetsMeet.WebApi;
 using LetsMeet.WebApi.RabbitMQ;
+using Microsoft.AspNetCore.Hosting;
+using System.Configuration;
+using FluentAssertions.Common;
+using StackExchange.Redis;
+using Microsoft.Extensions;
+using LetsMeet.Business;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'LetsMeetWebApiContextConnection' not found.");
@@ -40,8 +45,12 @@ builder.Services.AddScoped<IMunicipalityStore, MunicipalityStore>();
 builder.Services.AddScoped<IOfferManager, OfferManager>();
 builder.Services.AddScoped<IOfferStore, OfferStore>();
 
-builder.Services.AddScoped<IProductService, ProductService>();
+//builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IRabitMQProducer, RabitMQProducer>();
+
+builder.Services.AddScoped<ICacheService, CacheService>();
+
+
 
 //var Key = Encoding.ASCII.GetBytes("MY_BIG_SECRET_KEY_LKSHDJFLSDKJFW@#($)(#)34234");
 builder.Services.AddAuthentication(x =>
@@ -105,18 +114,14 @@ builder.Services.AddSwaggerGen(setup =>
 
 });
 
-builder.Services.AddControllers();
-builder.Services.AddScoped<ICacheService, CacheService>();
-builder.Services.AddDbContext<DbContextClass>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "RedisCacheDemo",
         Version = "v1"
     });
 });
-
-
 
 // Add services to the container.
 

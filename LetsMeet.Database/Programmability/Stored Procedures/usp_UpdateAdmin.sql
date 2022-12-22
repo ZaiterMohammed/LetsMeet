@@ -6,6 +6,6 @@
 AS
 BEGIN
 update Admins
- set UserId = @UserId , MunicipalityId = @MunicipalityId
+ set UserIdF = @UserId , MunicipalityIdF = @MunicipalityId
  where AdminId = @AdminId
 END

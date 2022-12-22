@@ -4,5 +4,5 @@
 AS
 BEGIN
 	SELECT * from Admins 
-	where MunicipalityId = @MunicipalityId
+	where MunicipalityIdF = @MunicipalityId
 END

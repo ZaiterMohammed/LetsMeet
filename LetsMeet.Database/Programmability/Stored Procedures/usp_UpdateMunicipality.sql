@@ -6,6 +6,6 @@
 AS
  BEGIN 
 	 update Municipality
-	 set MunicipalityName = @MunicipalityName , CountryId = @CountryId
+	 set MunicipalityName = @MunicipalityName , CountryIdF = @CountryId
 	 where MunicipalityId = @MunicipalityId
  END

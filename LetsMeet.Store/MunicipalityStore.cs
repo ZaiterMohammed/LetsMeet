@@ -59,7 +59,7 @@
             return ("Municipality was Successfully Deleted");
         }
 
-        public async Task<List<Municipality>> GetAllMunicipality()
+        public async Task<IEnumerable<Municipality>> GetAllMunicipality()
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
             string sql = "usp_GetAllMunicipality";
@@ -77,7 +77,7 @@
                     {
                         MunicipalityId = reader.GetGuid("MunicipalityId"),
                         MunicipalityName = reader.GetString("MunicipalityName"),
-                        CountryId = reader.GetGuid("CountryId"),
+                        CountryId = reader.GetGuid("CountryIdF"),
                     });
                 }
             }

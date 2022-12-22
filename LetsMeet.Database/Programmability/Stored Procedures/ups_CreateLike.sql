@@ -3,6 +3,6 @@
 	@PostId uniqueidentifier
 AS
 BEGIN
-	INSERT INTO Likes (LikeId,UserId,PostId)
+	INSERT INTO Likes (LikeId,UserIdF,PostIdF)
 	VALUES( newId(), @UserId,@PostId)
 END

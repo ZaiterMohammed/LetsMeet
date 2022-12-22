@@ -10,7 +10,7 @@
         public Task<String> AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest);
         public Task<String> UpdateMunicipality(Municipality municipality);
         public Task<String> DeleteMunicipality(Guid municipalityId);
-        public Task<List<Municipality>> GetAllMunicipality();
+        public Task<IEnumerable<Municipality>> GetAllMunicipality();
         public Task<String> AddAdmin(CreateAdminRequest createAdminRequest);
         public Task<String> DeleteAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId);
         public Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId);

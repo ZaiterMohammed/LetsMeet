@@ -3,6 +3,6 @@
 	@MunicipalityId uniqueidentifier
 AS
 BEGIN
-	INSERT INTO Admins (AdminId,UserId,MunicipalityId)
+	INSERT INTO Admins(AdminId,UserIdF,MunicipalityIdF)
 	VALUES( newId(), @UserId,@MunicipalityId)
 END

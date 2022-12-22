@@ -55,7 +55,7 @@ namespace LetsMeet.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/municipality/{municipalityId)")]
+        [Route("api/municipality/{municipalityId}")]
         public async Task<IActionResult> GetAllMunicipality([FromRoute] Guid municipalityId)
         {
             return Ok(await municipalityManager.GetMunicipalityById(municipalityId));

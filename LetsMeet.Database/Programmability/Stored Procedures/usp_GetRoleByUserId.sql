@@ -5,5 +5,5 @@
 AS
 BEGIN
 	SELECT * from Role 
-	where UserId = @UserId
+	where UserIdF = @UserId
 END

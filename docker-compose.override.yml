@@ -16,8 +16,10 @@ services:
     environment:
       - SA_PASSWORD=vV5r9tn0M4@
       - ACCEPT_EULA=Y
+      - LETSMEETSERVER_CONNECTIONSTRING=Server=localhost,1440;Initial Catalog=master;User ID=SA;Password=vV5r9tn0M4@;TrustServerCertificate=trueIntegrated Security=false
     ports:
-      - "1433:1433"
+      - "1450:1433"
+
   cache:
     ports:
        - '6379:6379'

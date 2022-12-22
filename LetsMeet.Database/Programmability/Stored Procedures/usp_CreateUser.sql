@@ -12,7 +12,7 @@
 
 AS
  BEGIN 
- Insert into Users (UserId,FirstName,LastName,Age,IsFeatured,CityId,CountryId,CreatedDate,ModifiedDate,OwnerId,MunicipalityId)  
+ Insert into Users (UserId,FirstName,LastName,Age,IsFeatured,CityIdF,CountryIdF,CreatedDate,ModifiedDate,OwnerIdF,MunicipalityIdF)  
  values(newId(),@FirstName,@LastName,@Age,@IsFeatured,@CityId,@CountryId,@CreatedDate,@ModifiedDate,@OwnerId,@MunicipalityId)  
  END
       

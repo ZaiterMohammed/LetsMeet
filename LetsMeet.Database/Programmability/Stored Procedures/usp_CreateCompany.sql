@@ -8,7 +8,7 @@
 
 AS
  BEGIN 
- Insert into Company (CompanyId,CompanyName,CompanyTypes,CityId,CountryId,CreatedDate,ModifiedDate)  
+ Insert into Company (CompanyId,CompanyName,CompanyTypes,CityIdF,CountryIdF,CreatedDate,ModifiedDate)  
  values(newId(),@CompanyName,@CompanyTypes,@CityId,@CountryId,@CreatedDate,@ModifiedDate)  
  END
       
