@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  letsmeet.webapi:
-    image: ${DOCKER_REGISTRY-}letsmeetwebapi
+  company:
+    image: company
     build:
       context: .
-      dockerfile: LetsMeet.WebApi/Dockerfile
+      dockerfile: LetsMeet.Company.WebApi/Dockerfile
 
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest

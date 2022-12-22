@@ -1,8 +1,9 @@
 ﻿
-using System;
-
 namespace LetsMeet.Redis
 {
+    using System;
+
+
     public interface ICacheService
     {
         /// <summary>

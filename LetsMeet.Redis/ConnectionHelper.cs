@@ -1,10 +1,13 @@
-﻿using StackExchange.Redis;
-using System;
-
+﻿
 namespace LetsMeet.Redis
 {
+    using StackExchange.Redis;
+    using System;
+
     public class ConnectionHelper
     {
+        private static readonly Lazy<ConnectionMultiplexer> lazyConnection;
+
         static ConnectionHelper()
         {
             lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
@@ -12,7 +15,7 @@ namespace LetsMeet.Redis
                 return ConnectionMultiplexer.Connect(ConfigurationManager.AppSetting["RedisURL"]);
             });
         }
-        private static Lazy<ConnectionMultiplexer> lazyConnection;
+
         public static ConnectionMultiplexer Connection
         {
             get

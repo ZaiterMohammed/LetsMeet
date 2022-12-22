@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LetsMeet.Abstractions\LetsMeet.Abstractions.csproj" />
+    <ProjectReference Include="..\LetsMeet.Notifications\LetsMeet.Notifications.csproj" />
     <ProjectReference Include="..\LetsMeet.Redis\LetsMeet.Redis.csproj" />
   </ItemGroup>
 </Project>

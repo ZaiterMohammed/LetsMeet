@@ -7,7 +7,7 @@
 
     public interface IMunicipalityManager
     {
-        public Task<String> AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest);
+        public Task<String> CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest);
         public Task<String> UpdateMunicipality(Municipality municipality);
         public Task<String> DeleteMunicipality(Guid municipalityId);
         public Task<IEnumerable<Municipality>> GetAllMunicipality();

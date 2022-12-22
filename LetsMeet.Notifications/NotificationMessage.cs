@@ -1,16 +1,17 @@
-﻿namespace LetsMeet.Abstractions.Models
+﻿
+namespace LetsMeet.Notifications
 {
     using System;
 
-    public class CreateMunicipalityRequest
+    public class NotificationMessage
     {
-        public string Name
+        public NotificationType Type
         {
             get;
             set;
         }
 
-        public Guid CountryId
+        public Guid Id
         {
             get;
             set;

@@ -36,7 +36,7 @@ namespace LetsMeet.Testing
             var createMunicipalityRequest = new CreateMunicipalityRequest();
 
             var manager = new MunicipalityManager(mockStore.Object, mockCacheService.Object, mockRabitMqProcedure.Object);
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.AddMunicipality(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.CreateMunicipality(null));
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace LetsMeet.Testing
 
             var manager = new MunicipalityManager(mockStore.Object,mockCacheService.Object, mockRabitMqProcedure.Object);
 
-            var result = await manager.AddMunicipality(createMunicipalityRequest);
+            var result = await manager.CreateMunicipality(createMunicipalityRequest);
             Assert.Equal("Municipality save Successfully", result);
 
             mockStore.Verify(e => e.AddMunicipality(createMunicipalityRequest));

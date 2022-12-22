@@ -19,18 +19,33 @@
             Configuration = configuration;
         }
 
-        public async Task<String> AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
+        public async Task<Guid> CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_CreateMunicipality";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@MunicipalityName", createMunicipalityRequest.MunicipalityName);
-            cmd.Parameters.AddWithValue("@CountryId", createMunicipalityRequest.CountryId);
+
+            using SqlCommand cmd = new SqlCommand("usp_CreateMunicipality", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            var municipalityId = Guid.NewGuid();
+
+            cmd.Parameters.AddWithValue("@id", municipalityId);
+            cmd.Parameters.AddWithValue("@name", createMunicipalityRequest.Name);
+            cmd.Parameters.AddWithValue("@countryId", createMunicipalityRequest.CountryId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.CloseAsync();
-            return ("Municipality save Successfully");
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+
+            return municipalityId;
         }
         public async Task<String> UpdateMunicipality(Municipality municipality)
         {
@@ -154,7 +169,7 @@
                     MunicipalityId = reader.GetGuid("MunicipalityId"),
                     MunicipalityName = reader.GetString("MunicipalityName"),
                     CountryId = reader.GetGuid("CountryId"),
-                  
+
                 };
             }
             return municipality;

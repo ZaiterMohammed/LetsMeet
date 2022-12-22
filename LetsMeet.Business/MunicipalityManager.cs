@@ -3,8 +3,8 @@
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using LetsMeet.Notifications;
     using LetsMeet.Redis;
-    using LetsMeet.WebApi;
     using LetsMeet.WebApi.RabbitMQ;
     using System;
     using System.Collections.Generic;
@@ -13,42 +13,41 @@
     public class MunicipalityManager : IMunicipalityManager
     {
         private readonly IMunicipalityStore municipalityStore;
-        private readonly ICacheService _cacheService;
-        private readonly IRabitMQProducer _rabitMQProducer;
+        private readonly ICacheService cachingService;
+        private readonly IRabitMQProducer messageBroker;
 
         public MunicipalityManager(IMunicipalityStore municipalityStore, ICacheService cacheService, IRabitMQProducer rabitMQProducer)
         {
-            if (municipalityStore == null)
-            {
-                throw new ArgumentNullException(nameof(municipalityStore));
-            }
-            if (cacheService == null)
-            {
-                throw new ArgumentNullException(nameof(cacheService));
-            }
-            if (rabitMQProducer == null)
-            {
-                throw new ArgumentNullException(nameof(rabitMQProducer));
-            }
-            this.municipalityStore = municipalityStore;
-            _cacheService = cacheService;
-            _rabitMQProducer = rabitMQProducer;
+            this.municipalityStore = municipalityStore ?? throw new ArgumentNullException(nameof(municipalityStore));
+            this.cachingService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
+            this.messageBroker = rabitMQProducer ?? throw new ArgumentNullException(nameof(rabitMQProducer));
         }
 
-        public async Task<String> AddMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
+        public async Task CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
         {
             if (createMunicipalityRequest == null)
             {
                 throw new ArgumentNullException(nameof(createMunicipalityRequest));
             }
-            var obj = await municipalityStore.AddMunicipality(createMunicipalityRequest);
-             _cacheService.RemoveData("municipality");
 
-            //send the inserted product data to the queue and consumer will listening this data from queue
-            _rabitMQProducer.SendProductMessage(obj);
-          
-            return obj;
+            var municipalityId = await municipalityStore.CreateMunicipality(createMunicipalityRequest);
+
+            messageBroker.SendProductMessage(new NotificationMessage()
+            {
+                Type = NotificationType.MunicipalityCreated,
+                Id = municipalityId
+            });
         }
+
+        //remarks:
+       //1-remove invalid response from managers and stores
+       //2-rename your apis and controllers
+       //3-fix rabbitMq configuration (add them to appsettings.json)
+       //4-use microservices architecture in your solution (separate your services), and reflect your changes to docker-compose file
+       //5-use multiple subscribers for your notification types
+       //6-add statistics feature (table in sql) to count number of companies, organizations, post, etc...
+       //7-expose apis for statistics to be viewable for end-users
+
         public async Task<string> UpdateMunicipality(Municipality municipality)
         {
             if (municipality == null)
@@ -56,7 +55,8 @@
                 throw new ArgumentNullException(nameof(municipality));
             }
             var responce = await municipalityStore.UpdateMunicipality(municipality);
-             _cacheService.RemoveData("municipality");
+
+            cachingService.RemoveData($"municipality:{municipality.MunicipalityId}");
 
             return responce;
         }
@@ -75,14 +75,14 @@
         public async Task<IEnumerable<Municipality>> GetAllMunicipality()
         {
 
-            var cacheData = _cacheService.GetData<IEnumerable<Municipality>>("municipality");
+            var cacheData = cachingService.GetData<IEnumerable<Municipality>>("municipality");
             if (cacheData != null)
             {
                 return cacheData;
             }
             var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
             cacheData = await municipalityStore.GetAllMunicipality();
-            _cacheService.SetData<IEnumerable<Municipality>>("municipality", cacheData, expirationTime);
+            cachingService.SetData<IEnumerable<Municipality>>("municipality", cacheData, expirationTime);
 
 
             return cacheData;
@@ -98,7 +98,7 @@
 
 
             Municipality filteredData;
-            var cacheData = _cacheService.GetData<IEnumerable<Municipality>>("municipality");
+            var cacheData = cachingService.GetData<IEnumerable<Municipality>>("municipality");
             if (cacheData == null)
             {
                 throw new ArgumentNullException(nameof(cacheData));
