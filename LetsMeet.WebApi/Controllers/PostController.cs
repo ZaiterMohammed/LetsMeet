@@ -18,16 +18,39 @@
 
         [HttpPost]
         [Route("api/post/like")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> AddLike([FromBody] PostAction postAction)
         {
-           return Ok(await postManager.AddLike(postAction));
+            if (postAction == null)
+            {
+                this.ModelState.AddModelError("PostActionCannotBeNull", "Post Action cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
+
+            return Ok(await postManager.AddLike(postAction));
         }
 
         [HttpDelete]
-        [Route("api/post/like/{postId}/{userId}")]
-        public async Task<IActionResult> DeleteLike([FromRoute] Guid postId, [FromRoute] Guid userId)
+        [Route("api/post/like/{postId}/user/{userId}")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> RemoveLike([FromRoute] Guid postId, [FromRoute] Guid userId)
         {
-            return Ok(await postManager.DeleteLike(postId, userId));
+            if (postId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("PostIdCannotBeNull", "Post Id cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
+            if (userId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("UserIdCannotBeNull", "User Id cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
+            return Ok(await postManager.RemoveLike(postId, userId));
         }
     }
 }

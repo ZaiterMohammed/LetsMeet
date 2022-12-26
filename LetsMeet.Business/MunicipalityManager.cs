@@ -8,6 +8,7 @@
     using LetsMeet.WebApi.RabbitMQ;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class MunicipalityManager : IMunicipalityManager
@@ -23,7 +24,7 @@
             this.messageBroker = rabitMQProducer ?? throw new ArgumentNullException(nameof(rabitMQProducer));
         }
 
-        public async Task CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
+        public async Task<Guid> CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest)
         {
             if (createMunicipalityRequest == null)
             {
@@ -32,45 +33,36 @@
 
             var municipalityId = await municipalityStore.CreateMunicipality(createMunicipalityRequest);
 
-            messageBroker.SendProductMessage(new NotificationMessage()
-            {
-                Type = NotificationType.MunicipalityCreated,
-                Id = municipalityId
-            });
+            messageBroker.SendProductMessage(new NotificationMessage() { Type = NotificationType.MunicipalityCreated, Id = municipalityId });
+
+            return municipalityId;
         }
 
-        //remarks:
-       //1-remove invalid response from managers and stores
-       //2-rename your apis and controllers
-       //3-fix rabbitMq configuration (add them to appsettings.json)
-       //4-use microservices architecture in your solution (separate your services), and reflect your changes to docker-compose file
-       //5-use multiple subscribers for your notification types
-       //6-add statistics feature (table in sql) to count number of companies, organizations, post, etc...
-       //7-expose apis for statistics to be viewable for end-users
-
-        public async Task<string> UpdateMunicipality(Municipality municipality)
+        public async Task<Guid> UpdateMunicipality(Municipality municipality)
         {
             if (municipality == null)
             {
                 throw new ArgumentNullException(nameof(municipality));
             }
-            var responce = await municipalityStore.UpdateMunicipality(municipality);
+            var responceMuniciId = await municipalityStore.UpdateMunicipality(municipality);
 
             cachingService.RemoveData($"municipality:{municipality.MunicipalityId}");
 
-            return responce;
+            return responceMuniciId;
         }
-        public async Task<string> DeleteMunicipality(Guid municipalityId)
+
+        public async Task<Guid> RemoveMunicipality(Guid municipalityId)
         {
             var municipality = await municipalityStore.GetMunicipalityById(municipalityId);
             if (municipality == null)
             {
                 throw new ArgumentNullException(nameof(municipality));
             }
-            var filteredData = await municipalityStore.DeleteMunicipality(municipalityId);
-            //_cacheService.RemoveData("municipality");
+            var responceMuniciId = await municipalityStore.RemoveMunicipality(municipalityId);
 
-            return filteredData;
+            cachingService.RemoveData($"municipality:{municipalityId}");
+
+            return responceMuniciId;
         }
         public async Task<IEnumerable<Municipality>> GetAllMunicipality()
         {
@@ -82,9 +74,11 @@
             }
             var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
             cacheData = await municipalityStore.GetAllMunicipality();
-            cachingService.SetData<IEnumerable<Municipality>>("municipality", cacheData, expirationTime);
-
-
+            cachingService.SetData<IEnumerable<Municipality>>($"municipality", cacheData, expirationTime);
+            foreach ( var municipality in cacheData)
+            {
+                cachingService.SetData<IEnumerable<Municipality>>($"municipality:{municipality.MunicipalityId}", cacheData, expirationTime);
+            }
             return cacheData;
         }
 
@@ -96,9 +90,8 @@
                 throw new ArgumentNullException(nameof(MunicipalityId));
             }
 
-
             Municipality filteredData;
-            var cacheData = cachingService.GetData<IEnumerable<Municipality>>("municipality");
+            var cacheData = cachingService.GetData<IEnumerable<Municipality>>($"municipality{MunicipalityId}");
             if (cacheData == null)
             {
                 throw new ArgumentNullException(nameof(cacheData));
@@ -108,29 +101,40 @@
         }
 
 
-        public async Task<string> AddAdmin(CreateAdminRequest createAdminRequest)
+        public async Task<Guid> AssignAdmin(Guid municipalityId , Guid userId)
         {
-            if (createAdminRequest == null)
+            if (municipalityId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(createAdminRequest));
+                throw new ArgumentNullException(nameof(municipalityId));
+            }
+            if (userId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(userId));
             }
 
-            var admins = await GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId);
+            var admins = await GetAllAdminsByMunicipalityId(municipalityId);
 
-            if (admins.Count == 0)
+            if (admins.Count() == 0)
             {
-                return await municipalityStore.AddAdmin(createAdminRequest);
+                return await municipalityStore.AssignAdmin(municipalityId , userId);
             }
             foreach (var admin in admins)
             {
-                if (admin.UserId != createAdminRequest.UserId)
+                if (admin.UserId != userId)
                 {
                     throw new Exception("you can no add an admin because you are not admin");
                 }
             }
-            return await municipalityStore.AddAdmin(createAdminRequest);
+
+            messageBroker.SendProductMessage(new NotificationMessage()
+            {
+                Type = NotificationType.MunicipalityCreated,
+                Id = municipalityId
+            });
+
+            return await municipalityStore.AssignAdmin(municipalityId,userId);
         }
-        public async Task<string> DeleteAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId)
+        public async Task<Guid> RemoveAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId)
         {
             if (AdminId == Guid.Empty)
             {
@@ -154,17 +158,34 @@
                     throw new Exception("you can no add an admin because you are not admin");
                 }
             }
-            return await municipalityStore.DeleteAdmin(AdminId, UserId, MunicipalityId);
+
+            cachingService.RemoveData($"municipality:{AdminId}");
+
+            return await municipalityStore.RemoveAdmin(AdminId, UserId, MunicipalityId);
         }
-        public async Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
+        public async Task<IEnumerable<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
         {
             if (MunicipalityId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(MunicipalityId));
             }
 
+            var cacheData = cachingService.GetData<IEnumerable<Admins>>("admins");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+            cacheData = await municipalityStore.GetAllAdminsByMunicipalityId(MunicipalityId);
+            cachingService.SetData<IEnumerable<Admins>>("admins", cacheData, expirationTime);
+            
+            foreach (var admin in cacheData)
+            {
+                cachingService.SetData<IEnumerable<Admins>>($"municipality:{admin.AdminId}", cacheData, expirationTime);
+            }
+
+
             return await municipalityStore.GetAllAdminsByMunicipalityId(MunicipalityId);
         }
-
     }
 }

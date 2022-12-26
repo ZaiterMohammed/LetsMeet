@@ -6,7 +6,7 @@
 
     public interface IPostStore
     {
-        public Task<String> AddLike(PostAction postAction);
-        public Task<String> DeleteLike(Guid postId, Guid userId);
+        public Task<Guid> AddLike(PostAction postAction);
+        public Task<Guid> RemoveLike(Guid postId, Guid userId);
     }
 }

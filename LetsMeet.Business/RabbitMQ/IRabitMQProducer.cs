@@ -1,4 +1,6 @@
-﻿namespace LetsMeet.WebApi.RabbitMQ
+﻿using System;
+
+namespace LetsMeet.WebApi.RabbitMQ
 {
     public interface IRabitMQProducer
     {

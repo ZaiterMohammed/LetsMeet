@@ -3,6 +3,8 @@
     using LetsMeet.Abstractions.Managers;
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
+    using LetsMeet.Redis;
+    using LetsMeet.WebApi.RabbitMQ;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -10,15 +12,21 @@
     public class OrganisationManager : IOrganisationManager
     {
         private readonly IOrganisationStore organisationStore;
-        public OrganisationManager(IOrganisationStore organisationStore)
+        private readonly IRabitMQProducer messageBroker;
+        private readonly ICacheService cachingService;
+
+        public OrganisationManager(IOrganisationStore organisationStore, ICacheService cacheService, IRabitMQProducer rabitMQProducer)
         {
             if (organisationStore == null)
             {
                 throw new ArgumentNullException(nameof(organisationStore));
             }
             this.organisationStore = organisationStore;
+            this.cachingService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
+            this.messageBroker = rabitMQProducer ?? throw new ArgumentNullException(nameof(rabitMQProducer));
+
         }
-        public async Task<String> AddOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
+        public async Task<Guid> CreateOrganisation(CreateOrganisationRequest organisationRequest, int IsFeatured)
         {
             if (organisationRequest == null)
             {
@@ -35,17 +43,26 @@
             // {
             //    return organisationStore.AddOrganisation(organisationRequest, IsFeatured);
             // }
-            return await organisationStore.AddOrganisation(organisationRequest, 0);
+            var organisationId = await organisationStore.CreateOrganisation(organisationRequest, 0);
+
+            messageBroker.SendProductMessage(organisationId);
+
+            return organisationId;
         }
-        public async Task<string> UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
+        public async Task<Guid> UpdateOrganisation(UpdateOrganisationRequest updateOrganisationRequest)
         {
             if (updateOrganisationRequest == null)
             {
                 throw new ArgumentNullException(nameof(updateOrganisationRequest));
             }
-            return await organisationStore.UpdateOrganisation(updateOrganisationRequest);
+
+            var organisationId = await organisationStore.UpdateOrganisation(updateOrganisationRequest);
+
+            cachingService.RemoveData($"organisation:{organisationId}");
+
+            return organisationId;
         }
-        public async Task<string> DeleteOrganisation(Guid organisationId)
+        public async Task<Guid> RemoveOrganisation(Guid organisationId)
         {
             var organization = await organisationStore.GetOrganisattionById(organisationId);
 
@@ -53,9 +70,15 @@
             {
                 throw new ArgumentNullException(nameof(organization));
             }
-            return await organisationStore.DeleteOrganisation(organisationId);
+
+            await organisationStore.RemoveOrganisation(organisationId);
+
+            cachingService.RemoveData($"organisation:{organisationId}");
+
+
+            return organisationId;
         }
-        public async Task<string> CreateRole(Guid id, Guid userId, string roleName)
+        public async Task<Guid> CreateRole(Guid id, Guid userId, string roleName)
         {
 
             if (id == null)
@@ -78,9 +101,13 @@
                 throw new ArgumentNullException("role Cannot be bull");
             }
 
-            return await organisationStore.CreateRole(id, userId, roleName);
+            var roleId = await organisationStore.CreateRole(id, userId, roleName);
+
+            messageBroker.SendProductMessage(roleId);
+
+            return roleId;
         }
-        public async Task<string> AcceptRole(Guid id, Guid userId, string roleName)
+        public async Task<Guid> AcceptRole(Guid id, Guid userId, string roleName)
         {
 
             if (id == null)
@@ -95,44 +122,75 @@
             {
                 throw new ArgumentNullException(nameof(roleName));
             }
+            var roleId = await organisationStore.AcceptRole(id, userId, roleName);
 
-            return await organisationStore.AcceptRole(id, userId, roleName);
+            cachingService.RemoveData($"role:{roleId}");
+
+            return roleId;
         }
-        public async Task<string> DeleteRole(Guid roleId)
+        public async Task<Guid> RemoveRole(Guid roleId)
         {
 
             if (roleId == null)
             {
                 throw new ArgumentNullException(nameof(roleId));
             }
-            return await organisationStore.DeleteRole(roleId);
+            await organisationStore.RemoveRole(roleId);
+
+            cachingService.RemoveData($"role:{roleId}");
+
+            return roleId;
         }
         public async Task<Role> GetRoleByUserId(Guid userId)
         {
+
             if (userId == null)
             {
                 throw new ArgumentNullException(nameof(userId));
             }
-            return await organisationStore.GetRoleByUserId(userId);
+
+            var cacheData = cachingService.GetData<Role>($"role{userId}");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetRoleByUserId(userId);
+
+            cachingService.SetData<Role>($"role:{userId}", cacheData, expirationTime);
+           
+            return cacheData;
         }
 
-        public async Task<string> AddPost(CreatePostRequest createPostRequest)
+        public async Task<Guid> CreatePost(CreatePostRequest createPostRequest)
         {
             if (createPostRequest == null)
             {
                 throw new ArgumentNullException(nameof(createPostRequest));
             }
-            return await organisationStore.AddPost(createPostRequest);
+
+
+            var postId = await organisationStore.CreatePost(createPostRequest);
+
+            messageBroker.SendProductMessage(postId);
+
+            return postId;
         }
-        public async Task<string> UpdatePost(CreatePostRequest createPostRequest)
+        public async Task<Guid> UpdatePost(CreatePostRequest createPostRequest)
         {
             if (createPostRequest == null)
             {
                 throw new ArgumentNullException(nameof(createPostRequest));
             }
-            return await organisationStore.UpdatePost(createPostRequest);
+
+            var postId = await organisationStore.UpdatePost(createPostRequest);
+
+            cachingService.RemoveData($"post:{postId}");
+
+            return postId;
         }
-        public async Task<string> DeletePost(Guid postId, Guid companyId)
+        public async Task<Guid> RemovePost(Guid postId, Guid companyId)
         {
             if (postId == null)
             {
@@ -150,11 +208,11 @@
                 throw new NullReferenceException("The specified post cannot be undefined or null.");
             }
 
-            if (companyId != post.CreatedBy)
-            {
-                return "cannet delete this post";
-            }
-            return await organisationStore.DeletePost(postId, companyId);
+            await organisationStore.RemovePost(postId, companyId);
+
+            cachingService.RemoveData($"post:{postId}");
+
+            return postId;
         }
 
         public async Task<Post> GetPostById(Guid postId)
@@ -163,21 +221,77 @@
             {
                 throw new ArgumentNullException(nameof(postId));
             }
-            return await organisationStore.GetPostById(postId);
+
+            var cacheData = cachingService.GetData<Post>($"post{postId}");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetPostById(postId);
+
+            cachingService.SetData<Post>($"post:{postId}", cacheData, expirationTime);
+
+            return cacheData;
         }
 
-        public async Task<List<Organisation>> GetAllOrganisation()
+        public async Task<IEnumerable<Organisation>> GetAllOrganisation()
         {
-            return await organisationStore.GetAllOrganisation();
+            var cacheData = cachingService.GetData<IEnumerable<Organisation>>("organisation");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetAllOrganisation();
+
+            cachingService.SetData<IEnumerable<Organisation>>($"organisation", cacheData, expirationTime);
+            foreach (var organisation in cacheData)
+            {
+                cachingService.SetData<IEnumerable<Organisation>>($"organisation:{organisation.OrganisationId}", cacheData, expirationTime);
+            }
+            return cacheData;
         }
 
-        public async Task<List<Organisation>> GetAllOrganisationNotVerified()
+        public async Task<IEnumerable<Organisation>> GetAllOrganisationNotVerified()
         {
-            return await organisationStore.GetAllOrganisationNotVerified();
+            var cacheData = cachingService.GetData<IEnumerable<Organisation>>("organisationNotVerified");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetAllOrganisationNotVerified();
+
+            cachingService.SetData<IEnumerable<Organisation>>($"organisationNotVerified", cacheData, expirationTime);
+            foreach (var organisation in cacheData)
+            {
+                cachingService.SetData<IEnumerable<Organisation>>($"organisation:{organisation.OrganisationId}", cacheData, expirationTime);
+            }
+            return cacheData;
         }
-        public async Task<List<Organisation>> GetAllOrganisationVerified()
+
+        public async Task<IEnumerable<Organisation>> GetAllOrganisationVerified()
         {
-            return await organisationStore.GetAllOrganisationVerified();
+            var cacheData = cachingService.GetData<IEnumerable<Organisation>>("organisationVerified");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetAllOrganisationVerified();
+
+            cachingService.SetData<IEnumerable<Organisation>>($"organisationVerified", cacheData, expirationTime);
+            foreach (var organisation in cacheData)
+            {
+                cachingService.SetData<IEnumerable<Organisation>>($"organisation:{organisation.OrganisationId}", cacheData, expirationTime);
+            }
+            return cacheData;
         }
 
         public async Task<Organisation> GetOrganisattionById(Guid organisationId)
@@ -186,7 +300,21 @@
             {
                 throw new ArgumentNullException(nameof(organisationId));
             }
-            return await organisationStore.GetOrganisattionById(organisationId);
+
+            var cacheData = cachingService.GetData<Organisation>($"post{organisationId}");
+            if (cacheData != null)
+            {
+                return cacheData;
+            }
+
+            var expirationTime = DateTimeOffset.Now.AddMinutes(5.0);
+
+            cacheData = await organisationStore.GetOrganisattionById(organisationId);
+
+            cachingService.SetData<Organisation>($"organisation:{organisationId}", cacheData, expirationTime);
+
+            return cacheData;
         }
+
     }
 }

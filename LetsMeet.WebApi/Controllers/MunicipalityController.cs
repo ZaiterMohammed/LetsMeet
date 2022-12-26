@@ -16,53 +16,104 @@ namespace LetsMeet.WebApi.Controllers
 
         [HttpPost]
         [Route("api/municipalities")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> CreateMunicipality([FromBody] CreateMunicipalityRequest createMunicipalityRequest)
         {
+            if (createMunicipalityRequest == null)
+            {
+                this.ModelState.AddModelError("CreateMunicipalityCannotBeNull", "Create Municipality cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
             return Ok( await municipalityManager.CreateMunicipality(createMunicipalityRequest));
         }
 
         [HttpPut]
         [Route("api/municipalities")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> UpdateMunicipality([FromBody] Municipality municipality)
         {
+            if (municipality == null)
+            {
+                this.ModelState.AddModelError("MunicipalityCannotBeNull", "Municipality cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
             return Ok( await municipalityManager.UpdateMunicipality(municipality));
         }
 
         [HttpDelete]
         [Route("api/municipalities/{municipalityId}")]
-        public async Task<IActionResult> DeleteMunicipality([FromRoute] Guid municipalityId)
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> RemoveMunicipality([FromRoute] Guid municipalityId)
         {
-            return Ok(await municipalityManager.DeleteMunicipality(municipalityId));
+            if (municipalityId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("MunicipalityIdCannotBeNull", "MunicipalityId cannot be null.");
+
+                return BadRequest(this.ModelState);
+            }
+            return Ok(await municipalityManager.RemoveMunicipality(municipalityId));
         }
 
         [HttpGet]
         [Route("api/municipalities")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Municipality>))]
         public async Task<IActionResult> GetAllMunicipalities()
         {
             return Ok(await municipalityManager.GetAllMunicipality());
         }
 
         [HttpPost]
-        [Route("api/municipalities/{municipalityId}/admin/{adminId}")]
-        [ProducesResponseType(200, Type =typeof(void))]
+        [Route("api/municipalities/{municipalityId}/admin/{userId}")]
+        [ProducesResponseType(200, Type =typeof(Guid))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> AssignAdmin([FromRoute]string municipalityId,[FromRoute] string adminId)
+        public async Task<IActionResult> AssignAdmin([FromRoute]Guid municipalityId,[FromRoute] Guid userId)
         {
-            if (string.IsNullOrEmpty(municipalityId))
+            if (municipalityId == Guid.Empty)
             {
-                this.ModelState.AddModelError("MunicipalityIdCannotBeNull", "Municipality id cannot be null or empty string.");
+                this.ModelState.AddModelError("MunicipalityIdCannotBeEmpty", "Municipality id cannot be empty.");
+
+                return BadRequest(this.ModelState);
+            }
+            if (userId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("UserIdCannotBeEmpty", "user id cannot be empty.");
 
                 return BadRequest(this.ModelState);
             }
 
-            return Ok(await municipalityManager.AddAdmin(createAdminRequest));
+            return Ok(await municipalityManager.AssignAdmin(municipalityId,userId));
         }
         
         [HttpDelete]
         [Route("api/municipalities/{municipalityId}/admin/{adminId}")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> RemoveAdmin([FromRoute] Guid adminId , [FromRoute] Guid userId, [FromRoute] Guid municipalityId)
         {
-            return Ok( await municipalityManager.DeleteAdmin(adminId, userId, municipalityId));
+            if (adminId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("AdminIdCannotBeEmpty", "admin id cannot be empty.");
+
+                return BadRequest(this.ModelState);
+            }
+            if (userId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("UserIdCannotBeEmpty", "user id cannot be empty.");
+
+                return BadRequest(this.ModelState);
+            }
+            if (municipalityId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("MunicipalityIdCannotBeEmpty", "municipality id cannot be empty.");
+
+                return BadRequest(this.ModelState);
+            }
+            return Ok( await municipalityManager.RemoveAdmin(adminId, userId, municipalityId));
         }
 
         [HttpGet]
@@ -70,6 +121,12 @@ namespace LetsMeet.WebApi.Controllers
         [ProducesResponseType(200,Type = typeof(Municipality))]
         public async Task<IActionResult> GetMunicipalityById([FromRoute] Guid municipalityId)
         {
+            if (municipalityId == Guid.Empty)
+            {
+                this.ModelState.AddModelError("MunicipalityIdCannotBeEmpty", "municipality id cannot be empty.");
+
+                return BadRequest(this.ModelState);
+            }
             return Ok(await municipalityManager.GetMunicipalityById(municipalityId));
         }
     }

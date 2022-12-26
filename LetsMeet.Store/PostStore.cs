@@ -17,31 +17,58 @@
         {
             Configuration = configuration;
         }
-        public async Task<String> AddLike(PostAction postAction)
+        public async Task<Guid> AddLike(PostAction postAction)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_CreateLike";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@PostId", postAction.PostId);
-            cmd.Parameters.AddWithValue("@UserId", postAction.UserId);
+
+            using SqlCommand cmd = new SqlCommand("usp_CreateLike", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            var likeId = Guid.NewGuid();
+
+            cmd.Parameters.AddWithValue("@likeId", likeId);
+            cmd.Parameters.AddWithValue("@postId", postAction.PostId);
+            cmd.Parameters.AddWithValue("@userId", postAction.UserId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.OpenAsync();
-            return ("Like save Successfully");
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.OpenAsync();
+            }
+           
+          
+            return likeId;
         }
-        public async Task<String> DeleteLike(Guid postId, Guid userId)
+        public async Task<Guid> RemoveLike(Guid postId, Guid userId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_DeleteLike";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
+
+            using SqlCommand cmd = new SqlCommand("usp_DeleteLike", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
             cmd.Parameters.AddWithValue("@PostId", postId);
             cmd.Parameters.AddWithValue("@UserId", userId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.OpenAsync();
-            return ("Like was Successfully Deleted");
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+            return postId;
+
         }
     }
 }

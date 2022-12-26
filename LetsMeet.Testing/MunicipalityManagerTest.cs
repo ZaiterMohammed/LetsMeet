@@ -4,6 +4,7 @@ namespace LetsMeet.Testing
     using LetsMeet.Abstractions.Models;
     using LetsMeet.Abstractions.Store;
     using LetsMeet.Business;
+    using LetsMeet.Redis;
     using LetsMeet.WebApi;
     using LetsMeet.WebApi.RabbitMQ;
     using Moq;
@@ -47,15 +48,15 @@ namespace LetsMeet.Testing
             var mockRabitMqProcedure = new Mock<IRabitMQProducer>();
 
             var createMunicipalityRequest = new CreateMunicipalityRequest();
-
-            mockStore.Setup(x => x.AddMunicipality(createMunicipalityRequest)).ReturnsAsync("Municipality save Successfully");
+            var MuniId = Guid.NewGuid();
+            mockStore.Setup(x => x.CreateMunicipality(createMunicipalityRequest)).ReturnsAsync(MuniId);
 
             var manager = new MunicipalityManager(mockStore.Object,mockCacheService.Object, mockRabitMqProcedure.Object);
 
             var result = await manager.CreateMunicipality(createMunicipalityRequest);
-            Assert.Equal("Municipality save Successfully", result);
+            Assert.Equal(MuniId, result);
 
-            mockStore.Verify(e => e.AddMunicipality(createMunicipalityRequest));
+            mockStore.Verify(e => e.CreateMunicipality(createMunicipalityRequest));
         }
 
         [Fact]
@@ -66,13 +67,14 @@ namespace LetsMeet.Testing
             var mockRabitMqProcedure = new Mock<IRabitMQProducer>();
 
             var municipality = new Municipality();
+            var MuniId = Guid.NewGuid();
 
-            mockStore.Setup(x => x.UpdateMunicipality(municipality)).ReturnsAsync("Municipality was Successfully Updated");
+            mockStore.Setup(x => x.UpdateMunicipality(municipality)).ReturnsAsync(MuniId);
 
             var manager = new MunicipalityManager(mockStore.Object, mockCacheService.Object, mockRabitMqProcedure.Object);
 
             var result = await manager.UpdateMunicipality(municipality);
-            Assert.Equal("Municipality was Successfully Updated", result);
+            Assert.Equal(MuniId, result);
 
             mockStore.Verify(e => e.UpdateMunicipality(municipality));
         }
@@ -84,10 +86,9 @@ namespace LetsMeet.Testing
             var mockCacheService = new Mock<ICacheService>();
             var mockRabitMqProcedure = new Mock<IRabitMQProducer>();
 
-            var createAdminRequest = new CreateAdminRequest();
 
             var manager = new MunicipalityManager(mockStore.Object, mockCacheService.Object, mockRabitMqProcedure.Object);
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.AddAdmin(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await manager.AssignAdmin(null, Guid.NewGuid())); ;
         }
 
         [Fact]
@@ -97,15 +98,14 @@ namespace LetsMeet.Testing
             var mockCacheService = new Mock<ICacheService>();
             var mockRabitMqProcedure = new Mock<IRabitMQProducer>();
 
-            var createAdminRequest = new CreateAdminRequest() { MunicipalityId = Guid.NewGuid(), UserId = Guid.NewGuid() };
-
             List<Admins> admins = new List<Admins>();
-
-            mockStore.Setup(x => x.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId)).ReturnsAsync(admins);
+            var adminId = Guid.NewGuid();
+            var municipalityId = Guid.NewGuid();
+            mockStore.Setup(x => x.GetAllAdminsByMunicipalityId(municipalityId)).ReturnsAsync(admins);
 
             var manager = new MunicipalityManager(mockStore.Object, mockCacheService.Object, mockRabitMqProcedure.Object);
 
-            var result = await manager.GetAllAdminsByMunicipalityId(createAdminRequest.MunicipalityId);
+            var result = await manager.GetAllAdminsByMunicipalityId(municipalityId);
             Assert.True(result.Count == 0);
         }
 

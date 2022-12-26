@@ -47,41 +47,78 @@
 
             return municipalityId;
         }
-        public async Task<String> UpdateMunicipality(Municipality municipality)
+        public async Task<Guid> UpdateMunicipality(Municipality municipality)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_UpdateMunicipality";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@MunicipalityId", municipality.MunicipalityId);
-            cmd.Parameters.AddWithValue("@MunicipalityName", municipality.MunicipalityName);
-            cmd.Parameters.AddWithValue("@CountryId", municipality.CountryId);
+
+            using SqlCommand cmd = new SqlCommand("usp_UpdateMunicipality", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            var municipalityId = Guid.NewGuid();
+
+            cmd.Parameters.AddWithValue("@id", municipalityId);
+            cmd.Parameters.AddWithValue("@name", municipality.MunicipalityName);
+            cmd.Parameters.AddWithValue("@countryId", municipality.CountryId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.CloseAsync();
-            return ("Municipality was Successfully Updated");
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+
+            return municipalityId;
         }
-        public async Task<String> DeleteMunicipality(Guid municipalityId)
+        public async Task<Guid> RemoveMunicipality(Guid municipalityId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_DeleteMunicipality";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@MunicipalityId", municipalityId);
+
+            using SqlCommand cmd = new SqlCommand("usp_DeleteMunicipality", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@id", municipalityId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.CloseAsync();
-            return ("Municipality was Successfully Deleted");
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+
+            return municipalityId;
         }
 
         public async Task<IEnumerable<Municipality>> GetAllMunicipality()
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_GetAllMunicipality";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
+
+            using SqlCommand cmd = new SqlCommand("usp_GetAllMunicipality", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
 
             var municipalities = new List<Municipality>();
             using (SqlDataReader reader = cmd.ExecuteReader())
@@ -99,41 +136,68 @@
             return municipalities;
         }
 
-        public async Task<String> AddAdmin(CreateAdminRequest createAdminRequest)
+        public async Task<Guid> AssignAdmin(Guid municipalityId,Guid userId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_CreateAdmin";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@UserId", createAdminRequest.UserId);
-            cmd.Parameters.AddWithValue("@MunicipalityId", createAdminRequest.MunicipalityId);
+
+            using SqlCommand cmd = new SqlCommand("usp_CreateAdmin", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            var adminId = Guid.NewGuid();
+
+            cmd.Parameters.AddWithValue("@adminId", adminId);
+            cmd.Parameters.AddWithValue("@userId", municipalityId);
+            cmd.Parameters.AddWithValue("@municipalityId", userId);
+            
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.CloseAsync();
-            return ("Admin save Successfully");
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+           
+            return adminId;
         }
-        public async Task<String> DeleteAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId)
+        public async Task<Guid> RemoveAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_DeleteAdmin";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
+
+            using SqlCommand cmd = new SqlCommand("usp_DeleteAdmin", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
             cmd.Parameters.AddWithValue("@AdminId", AdminId);
+
             await con.OpenAsync();
-            await cmd.ExecuteNonQueryAsync();
-            await con.CloseAsync();
-            return ("Admin was Successfully Deleted");
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await con.CloseAsync();
+
+            }
+            return AdminId;
         }
 
-        public async Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
+        public async Task<IEnumerable<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId)
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
-            string sql = "usp_GetAllAdminsByMunicipalityId";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
+
+            using SqlCommand cmd = new SqlCommand("usp_GetAllAdminsByMunicipalityId", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
             cmd.Parameters.AddWithValue("@MunicipalityId", MunicipalityId);
 
             await con.OpenAsync();
+
             await cmd.ExecuteNonQueryAsync();
 
             var Admins = new List<Admins>();
@@ -156,11 +220,15 @@
         {
             using SqlConnection con = new SqlConnection(Configuration["ConnectionString"]);
 
-            string sql = "usp_GetMunicipalityById";
-            using SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            using SqlCommand cmd = new SqlCommand("usp_GetMunicipalityById", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
             cmd.Parameters.AddWithValue("@MunicipalityId", MunicipalityId);
+
             await con.OpenAsync();
+
             var municipality = new Municipality();
             using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
             {

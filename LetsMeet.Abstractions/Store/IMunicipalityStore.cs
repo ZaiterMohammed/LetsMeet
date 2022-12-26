@@ -8,12 +8,13 @@
     public interface IMunicipalityStore
     {
         public Task<Guid> CreateMunicipality(CreateMunicipalityRequest createMunicipalityRequest);
-        public Task<String> UpdateMunicipality(Municipality municipality);
-        public Task<String> DeleteMunicipality(Guid municipalityId);
+        public Task<Guid> UpdateMunicipality(Municipality municipality);
+        public Task<Guid> RemoveMunicipality(Guid municipalityId);
         public Task<IEnumerable<Municipality>> GetAllMunicipality();
-        public Task<String> AddAdmin(CreateAdminRequest createAdminRequest);
-        public Task<String> DeleteAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId);
-        public Task<List<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId);
+        public Task<Guid> AssignAdmin(Guid municipalityId, Guid userId);
+        public Task<Guid> RemoveAdmin(Guid AdminId, Guid UserId, Guid MunicipalityId);
+        public Task<IEnumerable<Admins>> GetAllAdminsByMunicipalityId(Guid MunicipalityId);
         public Task<Municipality> GetMunicipalityById(Guid MunicipalityId);
+
     }
 }

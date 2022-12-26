@@ -1,25 +1,20 @@
 using LetsMeet.Abstractions.Managers;
 using LetsMeet.Abstractions.Store;
+using LetsMeet.Business;
+using LetsMeet.Redis;
 using LetsMeet.Store;
+using LetsMeet.WebApi.Areas.Identity.Data;
+using LetsMeet.WebApi.Data;
+using LetsMeet.WebApi.RabbitMQ;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using LetsMeet.WebApi.Data;
-using LetsMeet.WebApi.Areas.Identity.Data;
-using LetsMeet.WebApi;
-using LetsMeet.WebApi.RabbitMQ;
-using Microsoft.AspNetCore.Hosting;
-using System.Configuration;
-using FluentAssertions.Common;
-using StackExchange.Redis;
-using Microsoft.Extensions;
-using LetsMeet.Business;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'LetsMeetWebApiContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("SqlConnectionString") ?? throw new InvalidOperationException("Connection string 'LetsMeetWebApiContextConnection' not found.");
 
 builder.Services.AddDbContext<LetsMeetWebApiContext>(options =>
     options.UseSqlServer(connectionString));
