@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Company", "Company", "{801F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Company.WebApi", "LetsMeet.Company.WebApi\LetsMeet.Company.WebApi.csproj", "{2EC4CADB-D106-4A3D-A5C1-FA954DBBD853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsMeet.Substraction", "..\LetsMeet.Substraction\LetsMeet.Substraction.csproj", "{808A9856-0842-4DDD-BDE7-E667E0D89C24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsMeet.Subscription", "..\LetsMeet.Substraction\LetsMeet.Subscription.csproj", "{808A9856-0842-4DDD-BDE7-E667E0D89C24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

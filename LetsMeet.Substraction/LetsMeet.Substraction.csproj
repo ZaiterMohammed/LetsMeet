@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.86" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LetsMeet\LetsMeet.Notifications\LetsMeet.Notifications.csproj" />
+    <ProjectReference Include="..\LetsMeet\LetsMeet.Store\LetsMeet.Store.csproj" />
+  </ItemGroup>
+	<PropertyGroup>
+		<LangVersion>9.0</LangVersion>
+	</PropertyGroup>
+</Project>
